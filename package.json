@@ -10,10 +10,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "qs.js": "^0.1.12",
     "scss": "^0.2.4",
     "scss-loader": "0.0.1",
     "vant": "^1.6.13",
     "vue": "^2.5.2",
+    "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
