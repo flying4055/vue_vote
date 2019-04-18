@@ -5,11 +5,11 @@
         <router-view />
       </transition>
     </div>
-    <van-tabbar v-model="active" active-color="#f00" fixed>
-      <van-tabbar-item icon="home-o" :to="{ name:'home', params: { pid: app.active_id } }">首页</van-tabbar-item>
-      <van-tabbar-item icon="records" to="/apply">报名</van-tabbar-item>
-      <van-tabbar-item icon="notes-o" to="/intro">活动介绍</van-tabbar-item>
-      <van-tabbar-item icon="user-o" to="/prize">活动奖品</van-tabbar-item>
+    <van-tabbar v-model="$store.state.active" active-color="#f00" fixed>
+      <van-tabbar-item icon="home-o" :to="{ name:'works', params: { pid: $store.state.pid } }">首页</van-tabbar-item>
+      <van-tabbar-item icon="records" :to="{ name:'apply', params: { pid: $store.state.pid } }">报名</van-tabbar-item>
+      <van-tabbar-item icon="notes-o" :to="{ name:'intro', params: { pid: $store.state.pid } }">活动介绍</van-tabbar-item>
+      <van-tabbar-item icon="user-o" :to="{ name:'prize', params: { pid: $store.state.pid } }">活动奖品</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
@@ -19,8 +19,11 @@ export default {
   name: "layout",
   data() {
     return {
-      active: 0
-    };
+      activeData: null
+    }
+  },
+  mounted: function () {
+    this.$store.commit('set_pid', this.$route.params.pid)
   }
 };
 </script>

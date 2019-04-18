@@ -6,14 +6,14 @@
     </van-row>
     <van-row>
       <van-swipe :autoplay="3000" indicator-color="white">
-        <van-swipe-item v-for="(item, index) in bannerList" :key="index">
+        <van-swipe-item v-for="(item, index) in banners" :key="index">
           <img :src="item.image" width="100%">
         </van-swipe-item>
       </van-swipe>
     </van-row>
     <van-row>
       <van-cell-group>
-        <van-cell :title="active_info.name?active_info.name:'活动'" value="报名" @click="baoming()" />
+        <!-- <van-cell :title="active_info.name?active_info.name:'活动'" /> -->
       </van-cell-group>
       <van-row type="flex" justify="center" style="padding:18px 0;text-align:center;background-color:#f0f5f9;">
         <van-col span="8">
@@ -57,57 +57,41 @@
         <van-cell title="活动介绍" :label="active_info.desc" />
       </van-cell-group>
     </van-row>
-    <!-- <Layout></Layout> -->
   </div>
 </template>
 
 <script>
-// import Layout from "@/components/Layout";
 
 export default {
   name: "works",
-  inject: ['app'],
-  // components: { Layout },
   data() {
     return {
       detail_id: null,
       active_info: [],
-      layout_list: [{
-        id: 1, name: '首页', icon: 'home-o', to_url: "{ name:'home', params: { pid: app.active_id } }",
-        id: 2, name: '报名', icon: 'records', to_url: '/apply',
-        id: 3, name: '活动介绍', icon: 'notes-o', to_url: '/intro',
-        id: 4, name: '活动奖品', icon: 'user-o', to_url: '/prize',
-      }],
       searchVal: "",
-      bannerList: [],
-      items: []
+      banners: null,
+      items: [],
     };
   },
   mounted: function () {
-    this.detail_id = this.$route.params.pid
-
     this.getInfo();
-    console.log(this.detail_id);
-    console.log(this);
   },
   methods: {
     onSearch() {
       console.log(this.searchVal);
     },
-    baoming() {
-      this.$router.push('/apply')
-    },
     getInfo() {
       let self = this;
-      this.$axios.get('/api/event/get_info/id/' + self.detail_id)
+      this.$axios.get('/api/event/get_info/id/' + this.$route.params.pid)
         .then(function (res) {
           console.log(res);
           if (res.code === 1) {
-            self.active_info = res.data;
-            self.bannerList = res.data.banner;
-            console.log('请求成功')
+            self.$store.commit('set_db', res.data)
+            self.active_info = res.data
+            self.banners = res.data.banner
+            self.$toast('请求成功');
           } else {
-            console.log('请求错误,数据返回失败!!')
+            self.$toast('请求错误,数据返回失败!!');
           }
         })
     },

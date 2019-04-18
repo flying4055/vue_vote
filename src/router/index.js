@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 Vue.use(Router);
 
 export default new Router({
+  linkActiveClass: 'router-link-active',
   mode: "history",
   routes: [
     // 首屏
@@ -22,50 +23,69 @@ export default new Router({
       children: [
         {
           path: "",
-          name: "home",
-          component: () => import("@/view/Works")
-        }
-      ]
-    },
-    {
-      path: "/apply",
-      hidden: true,
-      component: Layout,
-      children: [
+          name: "works",
+          component: () => import("@/view/Works"),
+          meta: { title: "活动主页" }
+        },
         {
-          path: "",
-          name: "Apply",
+          path: "apply",
+          name: "apply",
           component: () => import("@/view/Apply"),
           meta: { title: "报名" }
-        }
-      ]
-    },
-    {
-      path: "/intro",
-      hidden: true,
-      component: Layout,
-      children: [
+        },
         {
-          path: "/",
+          path: "intro",
           name: "intro",
           component: () => import("@/view/Intro"),
           meta: { title: "活动简介" }
-        }
-      ]
-    },
-    {
-      path: "/prize",
-      hidden: true,
-      component: Layout,
-      children: [
+        },
         {
-          path: "/",
+          path: "prize",
           name: "prize",
           component: () => import("@/view/Prize"),
           meta: { title: "活动奖品" }
-        }
+        },
       ]
     },
+    // {
+    //   path: "/apply",
+    //   hidden: true,
+    //   component: Layout,
+    //   children: [
+    //     {
+    //       path: "",
+    //       name: "Apply",
+    //       component: () => import("@/view/Apply"),
+    //       meta: { title: "报名" }
+    //     }
+    //   ]
+    // },
+    // {
+    //   path: "/intro",
+    //   hidden: true,
+    //   component: Layout,
+    //   children: [
+    //     {
+    //       path: "/",
+    //       name: "intro",
+    //       component: () => import("@/view/Intro"),
+    //       meta: { title: "活动简介" }
+    //     }
+    //   ]
+    // },
+    // {
+    //   path: "/prize",
+    //   hidden: true,
+    //   component: Layout,
+    //   children: [
+    //     {
+    //       path: "/",
+    //       name: "prize",
+    //       component: () => import("@/view/Prize"),
+    //       meta: { title: "活动奖品" }
+    //     }
+    //   ]
+    // },
     // 作品详情
     {
       path: "/detail/:id",

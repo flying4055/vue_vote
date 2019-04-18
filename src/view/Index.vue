@@ -5,10 +5,10 @@
       <div class="list-box">
         <ul>
           <li v-for="item in list" :key="item.id" :title="item.id">
-            <div @click="$router.push({ name:'home', params: { pid: item.id } })">
+            <div @click="$router.push({ name:'works', params: { pid: item.id } })">
               <div class="title">{{item.name}}</div>
               <div class="content">
-                <label>介绍</label>
+                <label>活动介绍</label>
                 <article>{{item.desc}}</article>
               </div>
               <div class="footer">
@@ -75,7 +75,7 @@ export default {
 .list-box {
   padding: 8px 14px;
   box-sizing: border-box;
-  background-color: #fafafa;
+  background-color: #f5f7fb;
   min-height: 300px;
 }
 
@@ -88,35 +88,38 @@ export default {
   list-style: none;
   min-height: 100px;
   background-color: #fff;
-  color: #fafafa;
-  background-image: linear-gradient(135deg, #32be71 10%, #28c76f 100%);
+  color: #535572;
   box-shadow: 0 0 20px #eee;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 3px;
   box-shadow: 0 0 10px #ddd;
-  margin-bottom: 1rem;
+  margin-bottom: 8px;
   position: relative;
 }
 
 .title {
-  font-size: 17px;
-  font-weight: bold;
+  font-size: 16px;
+  /* font-weight: bold; */
   margin-bottom: 5px;
 }
 
 .content {
   padding: 3px;
-  min-height: 3rem;
+  height: 3.5rem;
   display: flex;
   justify-content: flex-start;
 }
 
 .content label {
-  width: 80px;
+  width: 70px;
 }
 
 .content article {
   flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .footer {
