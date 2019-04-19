@@ -1,9 +1,7 @@
 <template>
   <div>
     <van-nav-bar :title="$route.meta.title" />
-    <div v-html="$store.state.db.answer">
-
-    </div>
+    <div class="content" v-html="$store.state.db.answer"></div>
   </div>
 </template>
 
@@ -13,24 +11,13 @@ export default {
   name: "prize",
   data() {
     return {
-      imageList: [
-        {
-          id: 1,
-          img: "https://img.yzcdn.cn/2.jpg"
-        },
-        {
-          id: 2,
-          img: "https://img.yzcdn.cn/2.jpg"
-        },
-        {
-          id: 3,
-          img: "https://img.yzcdn.cn/2.jpg"
-        }
-      ]
     };
   }
 };
 </script>
 
 <style scoped>
+.content {
+  padding: 0 14px;
+}
 </style>

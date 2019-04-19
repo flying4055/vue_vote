@@ -1,24 +1,30 @@
 <template>
-    <div>
-         <van-row>
-			<van-panel title="活动展示"></van-panel>
-		</van-row>
-		<div style="padding:3px 14px;line-height:28px;color:#666;">
-			　　亭，是中国的传统建筑，起源于军事，近似于现代哨卡。之后多建于自然山水、村镇路旁，供行人歇脚休息、乘凉观景，既“亭者，停也。”继而发展为园林艺术景观。
-			亭，从造型来说“造式无定，自三角、四角、五角、梅花、六角、横圭、八角到十字，”以及圆形、扇形等等。亭的种类有景亭、桥亭、戏亭、碑亭、江亭、凉亭等等。
-			亭，或面对丘陵山岳，或滨临江河湖海，或隐于静寂园林，或显身喧闹市井；有的高大雄伟，有的小巧玲珑，有的富丽堂皇， 有的简朴清新，与周围景物构成了丰富多彩的风景线。
-			亭，自有以来，文人骚客，登临之际，咏唱风光，吊古叹今，题诗著文，留下了许多典故佳话和名篇美文。
-			亭，无论其建筑实体之艺术风采，还是书法楹联之文化底蕴，都是中华民族令人叹为观止的瑰宝。
-		</div>
+  <div>
+
+    <div style="padding:3px 14px;line-height:28px;color:#666;">
+      <div class="video">
+        <video :src="data.video_url" style="width:100%;"></video>
+      </div>
+      <div>
+        <img :src="data.images" style="width:100%;height:200px;" alt="">
+      </div>
+      <van-row>
+        <van-panel title="活动展示"></van-panel>
+      </van-row>
+      <div v-html="data.content"></div>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name:'show'
-    }
+export default {
+  name: 'show',
+  props: ['data'],
+  mounted: function () {
+    console.log(this.data)
+  }
+}
 </script>
 
 <style scoped>
-
 </style>

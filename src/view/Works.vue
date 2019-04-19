@@ -13,7 +13,7 @@
     </van-row>
     <van-row>
       <van-cell-group>
-        <!-- <van-cell :title="active_info.name?active_info.name:'活动'" /> -->
+        <van-cell :title="active_info.name?active_info.name:'活动'" />
       </van-cell-group>
       <van-row type="flex" justify="center" style="padding:18px 0;text-align:center;background-color:#f0f5f9;">
         <van-col span="8">
@@ -39,24 +39,23 @@
     <!-- 图片列表 -->
     <van-row style="padding-top:10px;background-color:#f5f5f5;">
       <van-row gutter="4" style="margin:0;">
-        <van-col class="photo_item" span="12" v-for="item in items" :key="item.id" style="margin-bottom: 0.875rem;">
+        <van-col class="photo_item" span="12" v-for="item in listData" :key="item.id" style="margin-bottom: 0.875rem;">
           <div style="line-height:0;">
-            <img :src="item.img" width="100%" height="260px">
+            <img :src="item.images" width="100%" height="260px">
           </div>
           <div class="photo_title">
-            <div style="flex:1;">标题</div>
+            <div style="flex:1;" v-text="item.user_name"></div>
             <div class="photo_title_btn" @click="$router.push({ name:'detail', params: { id: item.id } })">投票</div>
           </div>
         </van-col>
       </van-row>
-      <div style="margin: .875rem 0;text-align:center;color:#ccc;background-color:rgba(0,0,0,0)">加载更多...</div>
+      <!-- <div class="loading">加载更多...</div> -->
     </van-row>
     <!-- 活动介绍 -->
     <van-row>
-      <van-cell-group>
-        <van-cell title="活动介绍" :label="active_info.desc" />
-      </van-cell-group>
+      <van-panel title="活动介绍"></van-panel>
     </van-row>
+    <div style="padding:3px 14px;line-height:28px;color:#666;" v-text="active_info.desc"></div>
   </div>
 </template>
 
@@ -69,16 +68,21 @@ export default {
       detail_id: null,
       active_info: [],
       searchVal: "",
+      page: "",
       banners: null,
-      items: [],
+      listData: [],
     };
   },
   mounted: function () {
     this.getInfo();
+    this.getList();
   },
   methods: {
+    onLoad() {
+      this.getList();
+    },
     onSearch() {
-      console.log(this.searchVal);
+      this.getList();
     },
     getInfo() {
       let self = this;
@@ -95,6 +99,25 @@ export default {
           }
         })
     },
+    getList() {
+      let self = this;
+      this.$axios.get('/api/event/get_works_list', {
+        params: {
+          id: self.$route.params.pid,
+          name: self.searchVal,
+          page: self.page,
+        }
+      })
+        .then(function (res) {
+          console.log(res);
+          if (res.code === 1) {
+            self.listData = res.data
+            self.$toast('请求成功');
+          } else {
+            self.$toast('请求错误,数据返回失败!!');
+          }
+        })
+    }
   }
 };
 </script>
@@ -128,5 +151,12 @@ export default {
   text-align: center;
   background-color: #fff;
   border-bottom: 1px solid #eee;
+}
+
+.loading {
+  margin: 0.875rem 0;
+  text-align: center;
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0);
 }
 </style>
