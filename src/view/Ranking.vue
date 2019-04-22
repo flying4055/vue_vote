@@ -1,114 +1,197 @@
 <template>
-	<div>
-		<van-nav-bar title="排行榜" left-arrow @click-left="$router.go(-1)" />
-		<div style="padding: 8px 0;text-align:center;">
-            {{new Date().toLocaleString() }}
+  <div>
+    <div class="vote-box" @click="onVote_loading()">票榜</div>
+    <div style="padding: 5px 0;text-align:center;color:#333;font-size:12px;">
+      {{new Date().toLocaleString() }}
+    </div>
+    <div class="list">
+      <div class="item" v-for="(item, index) in listData" :key='index' @click="onRanking(item.id)">
+        <div class="item-img">
+          <img v-if="item.user_image" :src="item.user_image" alt="">
+          <img v-else src="../assets/user_image.jpg" alt="">
         </div>
-		<div class="list">
-			<div class="item" v-for="(item, index) in workList" :key='index'>
-				<div class="item-img">
-					<img :src="item.imgUrl" alt="">
-				</div>
-				<div class="item-content">
-					<div>{{item.username}} {{item.workName}} {{item.id}}号</div>
-					<div>票数{{item.num}}</div>
-					<div>距离第一名还差 {{item.num}}票</div>
-					<div>我叫{{item.info}}</div>
-				</div>
-				<div class="item-right">
-					<div>
-						<b style="color: #f00;">{{index+1}}</b><span>/NO</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="item-content">
+          <div class="item-user">{{item.user_name}} {{item.workName}} <span v-text="item.id"></span>号</div>
+          <div>票数<span v-text="item.vote_num"></span></div>
+          <div>距离第一名还差<span v-text="item.vote_num"></span>票</div>
+          <div v-html="item.user_intro"></div>
+        </div>
+        <div class="item-right">
+          <div>
+            <template v-if="index < 3">
+              <b style="color:red;" v-text="index +1"></b><span> /NO</span>
+            </template>
+            <template v-else>
+              <b v-text="index +1"></b><span> /NO</span>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-	name: "ranking",
-	data() {
-		return {
-			workList: [
-				{
-					id: 1,
-					username: "liu",
-					workName: "<荷花>",
-					num: 9983,
-					imgUrl:
-						"https://shp.qpic.cn/cms_pic/1346018069/1a7cfdcbffbf44549e6464f682ff74c5/0",
-					info: "请为我投票"
-				},
-				{
-					id: 2,
-					username: "yang",
-					workName: "<荷花>",
-					num: 2233,
-					imgUrl:
-						"https://shp.qpic.cn/cms_pic/1346018069/1a7cfdcbffbf44549e6464f682ff74c5/0",
-					info: "请为我投票"
-				},
-				{
-					id: 3,
-					username: "xu",
-					workName: "<荷花>",
-					num: 1233,
-					imgUrl:
-						"https://shp.qpic.cn/cms_pic/1346018069/1a7cfdcbffbf44549e6464f682ff74c5/0",
-					info: "请为我投票"
-				}
-			]
-		};
-	}
+  name: "ranking",
+  data() {
+    return {
+      active_id: 0,
+      listData: ''
+    };
+  },
+  mounted() {
+    this.active_id = this.$route.params.pid
+    this.getList();
+  },
+  methods: {
+    onVote_loading() {
+      this.getList();
+      this.$toast('刷新成功');
+    },
+    // 获取活动中作品列表
+    getList() {
+      let self = this;
+      this.$axios.get("/api/event/get_works_list", {
+        params: {
+          id: self.active_id
+        }
+      }).then(function (res) {
+        console.log(res);
+        if (res.code === 1) {
+          self.listData = [];
+          self.listData = res.data;
+          // self.$toast(res.msg);
+        } else {
+          self.$toast(res.msg);
+        }
+      });
+    },
+    onRanking(id) {
+      this.$router.push({ name: "detail", params: { id: id } });
+    }
+  }
 };
 </script>
 
 <style scoped>
+.vote-box {
+  width: 100%;
+  padding: 10px 0;
+  color: #f05a28;
+  border-bottom: 1px solid #f05a28;
+  background-color: #fff;
+  text-align: center;
+}
+
+@keyframes slidein {
+  from {
+    transform: rotate3d(1, 1, 1, 25deg);
+  }
+  to {
+    transform: rotate3d(0);
+  }
+}
+
 .list {
-	padding: 8px;
+  padding: 8px;
 }
 
 .item {
-	display: grid;
-	grid-template-columns: 80px auto 60px;
-	box-shadow: 0 0 20px #ddd;
-	padding: 8px;
-	border-radius: 5px;
-	font-size: 12px;
-	color: #666;
-    margin-bottom: 1rem;
-    min-height: 100px;
+  display: grid;
+  grid-template-columns: 70px auto 45px;
+  box-shadow: 0 5px 8px #ddd;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #444;
+  margin-bottom: 1rem;
+  min-height: 100px;
+  transform-origin: bottom left;
+  animation: slidein 0.5s;
+}
+
+.item:nth-child(1) {
+  color: #fff;
+  background-image: linear-gradient(135deg, #feb692 10%, #ea5455 100%);
+}
+.item:nth-child(2) {
+  color: #fff;
+  background-image: linear-gradient(135deg, #fccf31 10%, #f55555 100%);
+}
+.item:nth-child(3) {
+  color: #fff;
+  background-image: linear-gradient(135deg, #90f7ec 10%, #32ccbc 100%);
+}
+
+.item:nth-child(1) .item-user {
+  color: #fff;
+}
+.item:nth-child(2) .item-user {
+  color: #fff;
+}
+.item:nth-child(3) .item-user {
+  color: #fff;
+}
+
+.item:nth-child(1) .item-img {
+  background-image: url("../assets/king.png");
+  background-repeat: no-repeat;
+  background-size: 60px;
+  background-position: 5px 2px;
+}
+
+.item:nth-child(2) .item-img {
+  background-image: url("../assets/king2.png");
+  background-repeat: no-repeat;
+  background-size: 60px;
+  background-position: 5px 2px;
+}
+
+.item:nth-child(3) .item-img {
+  background-image: url("../assets/king3.png");
+  background-repeat: no-repeat;
+  background-size: 60px;
+  background-position: 5px 2px;
 }
 
 .item-img {
-	display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: 60px;
+  background-position: 5px 2px;
 }
+
 .item-img img {
-	width: 75px;
-	height: 75px;
-	border-radius: 100%;
+  margin: 0 auto;
+  border: 1px solid #fff;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
 }
 
 .item-content {
-	padding: 0 8px;
-	line-height: 1.8;
+  padding: 0 8px;
+  line-height: 1.8;
 }
 
 .item-content div:first-child {
-	color: #333;
-	font-size: 16px;
-	line-height: 1.6;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .item-right {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
+
 .item-right b {
-	font-size: 1.45rem;
-	align-self: flex-start;
+  font-size: 1.45rem;
+  align-self: flex-start;
 }
 </style>

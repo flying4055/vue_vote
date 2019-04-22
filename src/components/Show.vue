@@ -2,11 +2,11 @@
   <div>
 
     <div style="padding:3px 14px;line-height:28px;color:#666;">
-      <div class="video">
+      <div class="video" v-if="data.video_url">
         <video :src="data.video_url" style="width:100%;"></video>
       </div>
       <div>
-        <img :src="data.images" style="width:100%;height:200px;" alt="">
+        <img :src="data.images" style="width:100%;" alt="">
       </div>
       <van-row>
         <van-panel title="活动展示"></van-panel>

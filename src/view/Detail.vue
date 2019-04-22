@@ -34,9 +34,9 @@
     </van-tabs>
 
     <van-tabbar v-model="tabActive" fixed>
-      <van-tabbar-item icon="home-o" to="/works">首页</van-tabbar-item>
-      <van-tabbar-item icon="search">投票</van-tabbar-item>
-      <van-tabbar-item icon="friends-o" to="/ranking">排行榜</van-tabbar-item>
+      <van-tabbar-item icon="home-o" :to="{ name:'works', params: { pid: $store.state.pid } }">首页</van-tabbar-item>
+      <van-tabbar-item icon="like-o" color='#ff0000' size="20" @click="vote_btn()">投票</van-tabbar-item>
+      <van-tabbar-item icon="friends-o" :to="{ name:'ranking', params: { pid: $store.state.pid } }">排行榜</van-tabbar-item>
     </van-tabbar>
 
     <h1>
@@ -71,6 +71,10 @@ export default {
     onTapApply() {
       console.log(456)
       this.$toast.success('报名成功')
+    },
+    vote_btn() {
+      console.log(456)
+      this.$toast('感谢您珍贵的一票')
     },
     getDetail() {
       let self = this;
