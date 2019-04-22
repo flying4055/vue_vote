@@ -12,7 +12,8 @@ export default {
   name: "login",
   data() {
     return {
-      user: ""
+      user: "",
+      beforeLoginUrl: ""
     };
   },
   created() {
@@ -30,11 +31,12 @@ export default {
   },
   methods: {
     login() {
-      let beforeLoginUrl = Cookies.get("beforeLoginUrl");
-
-      let url = this.webUrl + "/Wap/User/info";
+      this.beforeLoginUrl = Cookies.get("beforeLoginUrl");
+      let OPENID = '';
+      let ACCESS_TOKEN = '';
+      let url = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
       // 通过cookie中保存的token 获取用户信息
-      this.$http.get(url).then(response => {
+      this.$axios.get(url).then(response => {
         response = response.body;
         if (response) {
           // 保存用户登录状态(Vuex)
@@ -43,8 +45,8 @@ export default {
             this.goBeforeLoginUrl(); // 页面恢复(进入用户一开始请求的页面)
           }, 2000);
         } else {
-          this.$alert("服务器撸猫去惹 :(", "wrong");
-          if (holdno.cookie.get("user")) {
+          // this.$alert("服务器撸猫去惹 :(", "wrong");
+          if (Cookies.get("user")) {
             // 跳转到微信授权页面
             window.location.href =
               this.webUrl + "/Wap/User/getOpenid";
