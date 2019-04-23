@@ -36,50 +36,32 @@ export default {
   name: "ranking",
   data() {
     return {
-      active_id: 0,
+      action_id: 0,
       listData: ''
     };
   },
   mounted() {
-    this.active_id = this.$route.params.pid
-    this.getList();
+    this.action_id = this.$route.params.pid
+    this.getRanking();
   },
   methods: {
     onVote_loading() {
-      this.getList();
+      this.getRanking();
       this.$toast('刷新成功');
     },
     // 获取活动中作品列表
-    getList() {
-      let self = this;
-      this.$axios.get("/api/event/get_works_list", {
-        params: {
-          id: self.active_id
-        }
-      }).then(function (res) {
-        console.log(res);
-        if (res.code === 1) {
-          self.listData = [];
-          self.listData = res.data;
-          // self.$toast(res.msg);
-        } else {
-          self.$toast(res.msg);
-        }
-      });
-    },
     // 获取排行榜
     getRanking() {
       let self = this;
-      this.$axios.get("/api/event/rank", {
+      this.$axios.get("/api/event/get_works_list", {
         params: {
-          id: self.active_id
+          id: self.action_id
         }
       }).then(function (res) {
-        console.log(res);
-        if (res.code === 1) {
+        console.log(res.data);
+        if (res.code == 1) {
           self.listData = [];
           self.listData = res.data;
-          // self.$toast(res.msg);
         } else {
           self.$toast(res.msg);
         }

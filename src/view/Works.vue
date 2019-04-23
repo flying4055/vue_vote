@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="font-size:14px;">
     <van-row>
       <van-notice-bar background="#f05a28" color="#fff" text="幸福是什么？我会毫不犹豫地回答：我最大的幸福是忘我地想你" left-icon="volume-o" />
     </van-row>
@@ -14,7 +14,7 @@
       <van-cell-group>
         <van-cell :title="active_info.name?active_info.name:'活动'" />
       </van-cell-group>
-      <van-row type="flex" justify="center" style="padding:18px 0;text-align:center;background-color:#f0f5f9;">
+      <van-row type="flex" justify="center" style="padding:18px 0;text-align:center;background-color:#eff1f7;">
         <van-col span="8">
           <van-row>已报名</van-row>
           <van-row v-text="active_info.join_num"></van-row>
@@ -48,8 +48,8 @@
           </div>
           <div class="list-item-footer">
             <div class="list-item-footer-title">
-              <span v-text="item.user_name?item.user_name:'小明《荷花》'"></span>
-              <span v-text="item.titile"></span>
+              <span v-text="item.user_name?item.user_name:'小明'"></span>
+              《<span v-text="item.titile?item.titile:'荷花'"></span>》
             </div>
             <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
           </div>
@@ -141,18 +141,20 @@ export default {
   justify-items: space-around;
   background-color: #f5f5f5;
   box-sizing: border-box;
-  padding: 10px 2px;
+  padding: 10px 2px 16px;
 }
 
 .list-item {
   padding: 3px;
+  height: 280px;
+  margin-bottom: 1rem;
 }
 
 .list-item-content {
   min-height: 3rem;
   padding: 2px;
   background-color: #fff;
-  box-shadow: 0 0 15px #ccc;
+  box-shadow: 0 0 15px #d0d9ef;
 }
 
 .list-item-img {
