@@ -67,6 +67,24 @@ export default {
         }
       });
     },
+    // 获取排行榜
+    getRanking() {
+      let self = this;
+      this.$axios.get("/api/event/rank", {
+        params: {
+          id: self.active_id
+        }
+      }).then(function (res) {
+        console.log(res);
+        if (res.code === 1) {
+          self.listData = [];
+          self.listData = res.data;
+          // self.$toast(res.msg);
+        } else {
+          self.$toast(res.msg);
+        }
+      });
+    },
     onRanking(id) {
       this.$router.push({ name: "detail", params: { id: id } });
     }

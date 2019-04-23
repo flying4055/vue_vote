@@ -12,11 +12,12 @@ const store = new Vuex.Store({
     count: 0,
     active: 0,
     pid: 1,
-    db: null
+    db: null,
+    default_img: '../assets/default.png'
   },
   mutations: {
-    increment(state) {
-      state.count++;
+    set_active(state, value) {
+      state.active = value;
     },
     set_pid(state, value) {
       state.pid = value;

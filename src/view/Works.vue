@@ -40,11 +40,17 @@
       <div class="list-item" v-for="item in listData" :key="item.id">
         <div class="list-item-content">
           <div class="list-item-img" @click="onVote_btn(item.id)">
-            <div class="list-item-vote_num">1232号&nbsp;9999票</div>
+            <div class="list-item-vote_num">
+              <span v-text="item.id"></span>号&nbsp;
+              <span v-text="item.vote_num"></span>票
+            </div>
             <img :src="item.images" width="100%">
           </div>
           <div class="list-item-footer">
-            <div class="list-item-footer-title" v-text="item.user_name?item.user_name:'小明《荷花》'"></div>
+            <div class="list-item-footer-title">
+              <span v-text="item.user_name?item.user_name:'小明《荷花》'"></span>
+              <span v-text="item.titile"></span>
+            </div>
             <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
           </div>
         </div>
@@ -69,7 +75,7 @@ export default {
       searchVal: "",
       page: 1,
       banners: null,
-      listData: []
+      listData: [],
     };
   },
   mounted: function () {
@@ -89,7 +95,7 @@ export default {
       this.$axios
         .get("/api/event/get_info/id/" + this.$route.params.pid)
         .then(function (res) {
-          console.log(res);
+          console.log(res.data);
           if (res.code === 1) {
             self.$store.commit("set_db", res.data);
             self.active_info = res.data;
@@ -110,7 +116,7 @@ export default {
           page: self.page
         }
       }).then(function (res) {
-        console.log(res);
+        console.log(res.data);
         if (res.code === 1) {
           self.listData = res.data;
           self.$toast("请求成功");
@@ -165,7 +171,7 @@ export default {
   border-bottom-right-radius: 10px;
   position: absolute;
   top: 1px;
-  left: 2px;
+  left: 1px;
   background-color: rgba(0, 0, 0, 0.3);
 }
 
