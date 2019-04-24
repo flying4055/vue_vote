@@ -22,7 +22,15 @@ const router = new Router({
       name: "login",
       hidden: true,
       component: () => import("@/view/Login"),
-      meta: { title: "登陆" }
+      meta: { title: "登陆" },
+      children: [
+        {
+          path: "token",
+          name: "token",
+          component: () => import("@/view/token"),
+          meta: { title: "token" }
+        }
+      ]
     },
     // 活动主页
     {
@@ -78,17 +86,19 @@ const router = new Router({
   ]
 });
 
-// router.beforeEach((to, from, next) => {
-//   console.log(to.fullPath);
-//   console.log(from);
-//   if (!store.state.token && to.path != "/login") {
-//     // 第一次进入项目
-//     let fullPath = to.fullPath;
-//     Cookies.set("beforeLoginUrl", fullPath);
-//     next("/login");
-//     return false;
-//   }
-//   next();
-// });
+router.beforeEach((to, from, next) => {
+  console.log(to.fullPath);
+  // console.log(from);
+  console.log(this.$store);
+  // if (!store.state.token && to.path != "/login") {
+  if (to.path != "/login") {
+    // 第一次进入项目
+    let fullPath = to.fullPath;
+    Cookies.set("beforeLoginUrl", to.fullPath);
+    next("/login");
+    return false;
+  }
+  next();
+});
 
 export default router;
