@@ -1,11 +1,13 @@
 <template>
   <div>
-
     <div style="padding:3px 14px;line-height:28px;color:#666;">
       <div class="video" v-if="data.video_url">
-        <video :src="data.video_url" style="width:100%;"></video>
+        <video style="width:100%;" height="240" controls>
+          <source :src="data.video_url" type="video/mp4">
+          您的浏览器不支持Video标签。
+        </video>
       </div>
-      <div>
+      <div v-if="data.images">
         <img :src="data.images" style="width:100%;" alt="">
       </div>
       <van-row>

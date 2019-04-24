@@ -1,10 +1,7 @@
 <template>
   <div style="font-size:14px;">
     <van-row>
-      <van-notice-bar background="#f05a28" color="#fff" text="幸福是什么？我会毫不犹豫地回答：我最大的幸福是忘我地想你" left-icon="volume-o" />
-    </van-row>
-    <van-row>
-      <van-swipe :autoplay="3000" indicator-color="white">
+      <van-swipe :autoplay="3000" indicator-color="#ff5959">
         <van-swipe-item v-for="(item, index) in banners" :key="index">
           <img :src="item.image" width="100%">
         </van-swipe-item>
@@ -36,7 +33,7 @@
       </van-search>
     </van-row>
     <!-- 作品列表 -->
-    <div class="list-box">
+    <div class="list-box" v-if="listData.length > 0">
       <div class="list-item" v-for="item in listData" :key="item.id">
         <div class="list-item-content">
           <div class="list-item-img" @click="onVote_btn(item.id)">
@@ -48,15 +45,16 @@
           </div>
           <div class="list-item-footer">
             <div class="list-item-footer-title">
-              <span v-text="item.user_name?item.user_name:'小明'"></span>
-              《<span v-text="item.titile?item.titile:'荷花'"></span>》
+              <span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
+              《<span v-text="item.title?item.title:'作品'+item.id "></span>》
             </div>
             <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
           </div>
         </div>
       </div>
-      <!-- <div class="loading">加载更多...</div> -->
+      <div class="loading">加载更多...</div>
     </div>
+    <div v-else class="loading">暂无作品展示</div>
     <!-- 活动介绍 -->
     <van-row>
       <van-panel title="活动介绍"></van-panel>
@@ -81,11 +79,9 @@ export default {
   mounted: function () {
     this.getInfo();
     this.getList();
+    // console.log(document.title);
   },
   methods: {
-    onLoad() {
-      this.getList();
-    },
     onSearch() {
       this.getList();
     },
@@ -100,11 +96,15 @@ export default {
             self.$store.commit("set_db", res.data);
             self.active_info = res.data;
             self.banners = res.data.banner;
-            self.$toast("请求成功");
+            document.title = self.active_info.name;
+
+            // self.$toast("请求成功");
           } else {
             self.$toast("请求错误,数据返回失败!!");
           }
-        });
+        }).catch((err) => {
+          console.log(err)
+        })
     },
     // 获取活动中作品列表
     getList() {
@@ -116,14 +116,15 @@ export default {
           page: self.page
         }
       }).then(function (res) {
-        console.log(res.data);
         if (res.code === 1) {
+          console.log(res.data);
           self.listData = res.data;
-          self.$toast("请求成功");
         } else {
-          self.$toast("请求错误,数据返回失败!!");
+          // self.$toast("请求错误,数据返回失败!!");
         }
-      });
+      }).catch(function (err) {
+        console.log(err)
+      })
     },
     // 点击投票按钮时
     onVote_btn(id) {

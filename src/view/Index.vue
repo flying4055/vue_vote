@@ -80,7 +80,19 @@ export default {
 </script>
 
 <style scoped>
+/* 淡入-从左 */
+@keyframes fadeinL {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(150px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+  }
+}
 .cover {
+  background-color: inherit;
 }
 
 .cover img {
@@ -89,11 +101,11 @@ export default {
 
 .main {
   position: relative;
-  background-color: #fff;
+  background-color: inherit;
 }
 .van-list {
   position: absolute;
-  top: -15px;
+  top: -40px;
   left: 14px;
   right: 14px;
   min-height: inherit;
@@ -101,6 +113,7 @@ export default {
 }
 
 .list-box {
+  background-color: inherit;
 }
 
 .list-box ul {
@@ -119,6 +132,7 @@ export default {
   margin-bottom: 14px;
   position: relative;
   overflow: hidden;
+  animation: fadeinL 0.8s;
 }
 
 .list-box ul li:nth-child(-n + 2):before {

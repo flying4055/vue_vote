@@ -1,9 +1,5 @@
 <template>
   <div>
-    <van-row>
-      <van-notice-bar background="#f05a28" color="#fff" text="当我想你的时候外面的世界与我无关就连我自己都归你统管当我想你的时候光亮都是多余即使我闭上双眼你甜美的容颜在我心里历历清晰
-当我想你的时你是我的太阳你灿烂的脸庞点亮我的心房我的脉管里流淌着你的温暖如果有人问我：幸福是什么？我会毫不犹豫地回答：我最大的幸福是忘我地想你" left-icon="volume-o" />
-    </van-row>
     <van-row style="background-color:#fff;padding:18px 0;text-align:center;">
       <van-col span="12">
         <div @click="onTapApply()">我也要报名</div>
@@ -75,10 +71,11 @@ export default {
     vote_btn() {
       let self = this;
       this.$axios.post('/api/event/vote', {
-        vote_id: self.detail_id,
-        works_id: self.$store.state.pid
+        works_id: self.detail_id,
+        vote_id: self.$store.state.pid
       }).then(function (res) {
         if (res.code == 1) {
+          self.getDetail();
           self.$toast(res.msg);
         } else {
           self.$toast(res.msg);

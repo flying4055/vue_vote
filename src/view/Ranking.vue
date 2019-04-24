@@ -13,16 +13,16 @@
         <div class="item-content">
           <div class="item-user">{{item.user_name}} {{item.workName}} <span v-text="item.id"></span>号</div>
           <div>票数<span v-text="item.vote_num"></span></div>
-          <div>距离第一名还差<span v-text="item.vote_num"></span>票</div>
+          <div>距离第一名还差<span v-text="item.last_num"></span>票</div>
           <div v-html="item.user_intro"></div>
         </div>
         <div class="item-right">
           <div>
             <template v-if="index < 3">
-              <b style="color:red;" v-text="index +1"></b><span> /NO</span>
+              <b style="color:red;" v-text="item.rank"></b><span> /NO</span>
             </template>
             <template v-else>
-              <b v-text="index +1"></b><span> /NO</span>
+              <b v-text="item.rank"></b><span> /NO</span>
             </template>
           </div>
         </div>
@@ -37,7 +37,9 @@ export default {
   data() {
     return {
       action_id: 0,
-      listData: ''
+      listData: '',
+      start: 1,
+      end: 10
     };
   },
   mounted() {
@@ -53,9 +55,11 @@ export default {
     // 获取排行榜
     getRanking() {
       let self = this;
-      this.$axios.get("/api/event/get_works_list", {
+      this.$axios.get("/api/event/rank", {
         params: {
-          id: self.action_id
+          vote_id: self.action_id,
+          start: self.start,
+          end: self.end
         }
       }).then(function (res) {
         console.log(res.data);
