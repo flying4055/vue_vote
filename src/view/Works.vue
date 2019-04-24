@@ -148,7 +148,8 @@ export default {
 .list-item {
   padding: 3px;
   height: 280px;
-  margin-bottom: 1rem;
+  padding-bottom: 16px;
+  overflow: hidden;
 }
 
 .list-item-content {

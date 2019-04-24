@@ -11,15 +11,15 @@
           <img v-else src="../assets/user_image.jpg" alt="">
         </div>
         <div class="item-content">
-          <div class="item-user">{{item.user_name}} {{item.workName}} <span v-text="item.id"></span>号</div>
-          <div>票数<span v-text="item.vote_num"></span></div>
-          <div>距离第一名还差<span v-text="item.last_num"></span>票</div>
+          <div class="item-user">{{item.user_name}} {{item.workName}} <span v-text="item.id"></span> 号</div>
+          <div style="font-size:14px;">票数 <span v-text="item.vote_num"></span></div>
+          <div>距离第一名还差 <span v-text="item.last_num"></span> 票</div>
           <div v-html="item.user_intro"></div>
         </div>
         <div class="item-right">
           <div>
             <template v-if="index < 3">
-              <b style="color:red;" v-text="item.rank"></b><span> /NO</span>
+              <b style="color:red;" v-text="item.rank"></b> <span> /NO</span>
             </template>
             <template v-else>
               <b v-text="item.rank"></b><span> /NO</span>
@@ -113,6 +113,7 @@ export default {
   min-height: 100px;
   transform-origin: bottom left;
   animation: slidein 0.5s;
+  overflow: hidden;
 }
 
 .item:nth-child(1) {
@@ -142,21 +143,21 @@ export default {
   background-image: url("../assets/king.png");
   background-repeat: no-repeat;
   background-size: 60px;
-  background-position: 5px 2px;
+  background-position: 5px 4px;
 }
 
 .item:nth-child(2) .item-img {
   background-image: url("../assets/king2.png");
   background-repeat: no-repeat;
   background-size: 60px;
-  background-position: 5px 2px;
+  background-position: 5px 4px;
 }
 
 .item:nth-child(3) .item-img {
   background-image: url("../assets/king3.png");
   background-repeat: no-repeat;
   background-size: 60px;
-  background-position: 5px 2px;
+  background-position: 5px 4px;
 }
 
 .item-img {

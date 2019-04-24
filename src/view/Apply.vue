@@ -13,7 +13,7 @@
         </div>
         <div class="form-item form-item-textarea">
           <label for="textarea">作品简介</label>
-          <textarea name="desc" id='textarea' contenteditable="true" placeholder="请输入作品简介" cols="20" rows="2" maxlength="150"></textarea>
+          <textarea name="desc" id='textarea' contenteditable="true" placeholder="请输入作品简介" cols="20" rows="3" maxlength="150"></textarea>
         </div>
       </div>
       <div class="form-group">
@@ -25,9 +25,8 @@
           </div>
         </div>
       </div>
-      <div class="form-item">
-        <van-button type="primary" @click="onSubmit()" style="width: 100%;">确认提交</van-button>
-      </div>
+      <van-button type="primary" @click="onSubmit()" style="width: 100%;">确认提交</van-button>
+
     </form>
   </div>
 </template>
@@ -84,20 +83,15 @@ export default {
 
 .form-group {
   padding: 10px;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   box-shadow: 0 0 10px #ddd;
   border-radius: 5px;
 }
 
 .form-item {
-  padding: 8px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: flex-start;
-}
-
-.form-item:not(:last-child) {
-  border-bottom: 1px solid #eee;
-  margin-bottom: 1rem;
 }
 
 .form-item label {
