@@ -18,6 +18,9 @@ const store = new Vuex.Store({
     default_img: "../assets/default.png"
   },
   mutations: {
+    set_token(state, value) {
+      state.token = value;
+    },
     set_beforeLoginUrl(state, value) {
       state.beforeLoginUrl = value;
     },

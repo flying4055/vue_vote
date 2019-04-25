@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import store from "@/store";
+import Store from "@/store";
 import Cookies from "js-cookie";
 import Layout from "@/components/Layout";
 
@@ -25,7 +25,7 @@ const router = new Router({
       meta: { title: "登陆" },
       children: [
         {
-          path: "token",
+          path: "token/:tokens",
           name: "token",
           component: () => import("@/view/token"),
           meta: { title: "token" }
@@ -88,12 +88,9 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   console.log(to.fullPath);
-  // console.log(from);
-  console.log(this.$store);
-  // if (!store.state.token && to.path != "/login") {
-  if (to.path != "/login") {
+  console.log(from);
+  if (!Store.state.token && to.path != "/login") {
     // 第一次进入项目
-    let fullPath = to.fullPath;
     Cookies.set("beforeLoginUrl", to.fullPath);
     next("/login");
     return false;
