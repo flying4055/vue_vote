@@ -13,25 +13,28 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
 axios.defaults.baseURL = "http://vote.crjblog.cn";
-axios.interceptors.request.use((config)=>{
-    const token =  localStorage.getItem('token');
-    console.log(token);
-    if(token){
-        config.headers.token = token;
-    }
-    return config;
-},(error => {
-    return Promise.reject(error);
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  console.log(token);
+  if (token) {
+    config.headers.token = token;
+  }
+  return config;
+}, (error => {
+  return Promise.reject(error);
 }));
 axios.interceptors.response.use(
-    function(response) {
-        // 对响应数据做点什么
-        return response.data;
-    },
-    function(error) {
-        // 对响应错误做点什么
-        return Promise.reject(error);
+  function (response) {
+    // 对响应数据做点什么
+    if (response.data.code == 900) {
+      router.push('/login');
     }
+    return response.data;
+  },
+  function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  }
 );
 Vue.prototype.$axios = axios; //全局注册，使用方法为:this.$axios
 Vue.prototype.qs = qs;
@@ -47,9 +50,9 @@ Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
-    el: "#app",
-    router,
-    store,
-    components: { App },
-    template: "<App/>"
+  el: "#app",
+  router,
+  store,
+  components: { App },
+  template: "<App/>"
 });

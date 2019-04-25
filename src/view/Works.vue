@@ -138,7 +138,7 @@ export default {
 .list-box {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-row-gap: 14px;
+  grid-row-gap: 18px;
   justify-items: space-around;
   background-color: #f5f5f5;
   box-sizing: border-box;
@@ -148,8 +148,6 @@ export default {
 .list-item {
   padding: 3px;
   height: 280px;
-  padding-bottom: 16px;
-  overflow: hidden;
 }
 
 .list-item-content {
@@ -160,7 +158,6 @@ export default {
 }
 
 .list-item-img {
-  /* min-height: 260px; */
   overflow: hidden;
   position: relative;
 }

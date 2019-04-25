@@ -13,7 +13,7 @@
         <div class="item-content">
           <div class="item-user">{{item.user_name}} {{item.workName}} <span v-text="item.id"></span> 号</div>
           <div style="font-size:14px;">票数 <span v-text="item.vote_num"></span></div>
-          <div>距离第一名还差 <span v-text="item.last_num"></span> 票</div>
+          <div>距离上一名还差 <span v-text="item.last_num"></span> 票</div>
           <div v-html="item.user_intro"></div>
         </div>
         <div class="item-right">

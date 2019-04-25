@@ -79,28 +79,22 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  //记录每次的url
-    // 如果没有token就跳转至微信授权页面
-    //如果
   var params = to.fullPath.split('/');
   var token = localStorage.getItem('token');
-
-  if(params[1] == "login" && params[2]=='token'){
-
-        localStorage.setItem('token',params[3]);
-        var url = localStorage.getItem("beforeUrl");
-        console.log(url);
-        url.split('/');
-        if(url =='' || params[1] == "login"){
-            url = '/';
-        }
-        next(url);
-        return false;
-    }else if (!token && params[1] != "login") {
-    // 第一次进入项目
-      localStorage.setItem("beforeUrl", to.fullPath);
-      next("/login");
-      return false;
+  if (params[1] == "login" && params[2] == 'token') {
+    localStorage.setItem('token', params[3]);
+    var url = localStorage.getItem("beforeUrl");
+    console.log(url);
+    url.split('/');
+    if (url == '' || params[1] == "login") {
+      url = '/';
+    }
+    next(url);
+    return false;
+  } else if (!token && params[1] != "login") {
+    localStorage.setItem("beforeUrl", to.fullPath);
+    next("/login");
+    return false;
   }
   next();
 });
