@@ -97,7 +97,6 @@ export default {
             self.active_info = res.data;
             self.banners = res.data.banner;
             document.title = self.active_info.name;
-
             // self.$toast("请求成功");
           } else {
             self.$toast("请求错误,数据返回失败!!");
@@ -138,16 +137,16 @@ export default {
 .list-box {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-row-gap: 18px;
   justify-items: space-around;
   background-color: #f5f5f5;
   box-sizing: border-box;
+  margin-bottom: 10px;
   padding: 10px 2px 16px;
 }
 
 .list-item {
   padding: 3px;
-  height: 280px;
+  margin-bottom: 10px;
 }
 
 .list-item-content {

@@ -13,7 +13,7 @@ Vue.use(VueAxios, axios);
 axios.defaults.baseURL = "http://vote.crjblog.cn";
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  console.log(token);
+  // console.log(token);
   if (token) {
     config.headers.token = token;
   }
@@ -36,10 +36,6 @@ axios.interceptors.response.use(
 );
 Vue.prototype.$axios = axios; //全局注册，使用方法为:this.$axios
 Vue.prototype.qs = qs;
-// 导入微信SDK
-import wxSdk from "weixin-js-sdk";
-Vue.use(wxSdk);
-Vue.prototype.$wxSdk = wxSdk;
 // 引入js cookie
 import Cookies from "js-cookie";
 Vue.prototype.$Cookies = Cookies;
