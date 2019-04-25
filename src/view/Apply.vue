@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<van-nav-bar :title="$route.meta.title" />
 		<form class="form">
 			<div class="form-group">
 				<div class="form-item">

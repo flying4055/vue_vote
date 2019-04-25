@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<van-nav-bar :title="$route.meta.title" />
 		<van-row>
 			<van-panel title="活动介绍" desc="" status="状态"></van-panel>
 		</van-row>

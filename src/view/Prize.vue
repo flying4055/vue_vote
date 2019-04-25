@@ -1,6 +1,5 @@
 <template>
   <div>
-    <van-nav-bar :title="$route.meta.title" />
     <div class="content" v-html="$store.state.db.answer"></div>
   </div>
 </template>
@@ -11,7 +10,10 @@ export default {
   name: "prize",
   data() {
     return {
-    };
+    }
+  },
+  mounted(){
+    document.title = "活动奖品"
   }
 };
 </script>
