@@ -17,6 +17,8 @@ export default {
     };
   },
   created() {
+			document.title = '登陆 ...';
+
       let ua = window.navigator.userAgent.toLowerCase();
       console.log(ua.match(/MicroMessenger/i));
       if (ua.match(/MicroMessenger/i) == "micromessenger") {

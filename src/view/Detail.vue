@@ -94,6 +94,7 @@ export default {
         console.log(res.data);
         if (res.code == 1) {
           self.detailData = res.data;
+          document.title = res.data.title;
           self.$toast(res.msg);
         } else {
           self.$toast("请求错误,数据返回失败!!");
