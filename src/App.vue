@@ -17,9 +17,11 @@ export default {
   },
   mounted() {
     let self = this;
-    this.$axios.get('/api/weixin/jsSignature').then((res) => {
+    let _url = encodeURIComponent(window.location.href.split('#')[0]);
+    this.$axios.get('/api/weixin/jsSignature', { params: { url: _url } }).then((res) => {
       if (res.code == 200) {
         let resData = res.data;
+        console.log(resData);
         wechat.config({
           appId: resData.appId,
           debug: resData.debug,
@@ -32,12 +34,8 @@ export default {
     }).catch((err) => {
       console.log(err);
     })
-    wechat.error(function (res) {
-      console.log('验证失败返回的信息:', res);
-    });
     wechat.ready(function () {
-      let location_url = encodeURIComponent(window.location.href.split('#')[0]);
-      //  + '#' + self.$route.path
+      let location_url = location.href;
       wechat.onMenuShareAppMessage({
         title: document.title, // 分享标题
         desc: document.title, // 分享描述
@@ -45,12 +43,6 @@ export default {
         imgUrl: 'imgUrl123', // 分享图标
         success: function (res) {
           // 用户确认分享后执行的回调函数
-          console.log('用户确认分享后执行的回调函数11111')
-          console.log(res)
-        },
-        cancel: function () {
-          // 用户取消分享后执行的回调函数
-          console.log('用户取消分享后执行的回调函数222222222')
           console.log(res)
         }
       });
@@ -60,17 +52,10 @@ export default {
         imgUrl: "imgUrl分享图标", // 分享图标
         success: function (res) {
           // 用户确认分享后执行的回调函数
-          console.log('用户确认分享后执行的回调函数33333')
-          console.log(res)
-        },
-        cancel: function (res) {
-          // 用户取消分享后执行的回调函数
-          console.log('用户取消分享后执行的回调函数44444')
           console.log(res)
         }
       });
     });
-
   }
 };
 </script>
