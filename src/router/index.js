@@ -83,8 +83,8 @@ router.beforeEach((to, from, next) => {
     localStorage.setItem('token', params[3]);
     var url = localStorage.getItem("beforeUrl");
     console.log(url);
-    url.split('/');
-    if (url == '' || params[1] == "login") {
+    var urlParam = url.split('/');
+    if (url == '' || urlParam[1] == "login") {
       url = '/';
     }
     next(url);
