@@ -1,7 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Store from "@/store";
-import Cookies from "js-cookie";
 import Layout from "@/components/Layout";
 
 Vue.use(Router);
