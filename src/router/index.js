@@ -22,15 +22,7 @@ const router = new Router({
       name: "login",
       hidden: true,
       component: () => import("@/view/Login"),
-      meta: { title: "登陆" },
-      children: [
-        {
-          path: "token/:tokens",
-          name: "token",
-          component: () => import("@/view/token"),
-          meta: { title: "token" }
-        }
-      ]
+      meta: { title: "登陆" }
     },
     // 活动主页
     {
@@ -87,13 +79,28 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to.fullPath);
-  console.log(from);
-  if (!Store.state.token && to.path != "/login") {
+  //记录每次的url
+    // 如果没有token就跳转至微信授权页面
+    //如果
+  var params = to.fullPath.split('/');
+  var token = localStorage.getItem('token');
+
+  if(params[1] == "login" && params[2]=='token'){
+
+        localStorage.setItem('token',params[3]);
+        var url = localStorage.getItem("beforeUrl");
+        console.log(url);
+        url.split('/');
+        if(url =='' || params[1] == "login"){
+            url = '/';
+        }
+        next(url);
+        return false;
+    }else if (!token && params[1] != "login") {
     // 第一次进入项目
-    Cookies.set("beforeLoginUrl", to.fullPath);
-    next("/login");
-    return false;
+      localStorage.setItem("beforeUrl", to.fullPath);
+      next("/login");
+      return false;
   }
   next();
 });

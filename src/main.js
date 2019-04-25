@@ -13,6 +13,16 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
 axios.defaults.baseURL = "http://vote.crjblog.cn";
+axios.interceptors.request.use((config)=>{
+    const token =  localStorage.getItem('token');
+    console.log(token);
+    if(token){
+        config.headers.token = token;
+    }
+    return config;
+},(error => {
+    return Promise.reject(error);
+}));
 axios.interceptors.response.use(
     function(response) {
         // 对响应数据做点什么
