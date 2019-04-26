@@ -34,28 +34,7 @@ export default {
     }).catch((err) => {
       console.log(err);
     })
-    wechat.ready(function () {
-      let location_url = location.href;
-      wechat.onMenuShareAppMessage({
-        title: document.title, // 分享标题
-        desc: document.title, // 分享描述
-        link: location_url, // 分享链接
-        imgUrl: 'imgUrl123', // 分享图标
-        success: function (res) {
-          // 用户确认分享后执行的回调函数
-          console.log(res)
-        }
-      });
-      wechat.onMenuShareTimeline({
-        title: document.title, // 分享标题
-        link: location_url, // 分享链接
-        imgUrl: "imgUrl分享图标", // 分享图标
-        success: function (res) {
-          // 用户确认分享后执行的回调函数
-          console.log(res)
-        }
-      });
-    });
+
   }
 };
 </script>
