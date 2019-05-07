@@ -41,7 +41,7 @@
       <div class="vote_tab_item" @click="go_home()">首页</div>
       <div class="vote_tab_item">
         <div class="vote_like" @click="vote_btn()">
-          <van-icon name="like" size="50px" :color="likeColor" />
+          <van-icon name="like" size="50px" :color="likeColor ? Color1 : Color2" />
           <div>投票</div>
         </div>
       </div>
@@ -68,7 +68,9 @@ export default {
       active: 0,
       tabActive: 0,
       detailData: [],
-      likeColor: '#ccc'
+      likeColor: 0,
+      Color1: '#ff0b55',
+      Color2: '#ccc',
     };
   }, watch: {
     $route: {
@@ -111,7 +113,6 @@ export default {
       }).then(function (res) {
         if (res.code == 1) {
           self.getDetail();
-          self.likeColor = "#ff0b55"
         } else {
           self.$toast(res.msg);
         }
@@ -129,7 +130,7 @@ export default {
         console.log(res.data);
         if (res.code == 1) {
           self.detailData = res.data;
-          // self.$toast(res.msg);
+          self.likeColor = res.data.is_vote;
           document.title = self.detailData.title;
         } else {
           self.$toast("请求错误,数据返回失败!!");
