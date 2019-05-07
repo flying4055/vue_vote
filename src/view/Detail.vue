@@ -30,9 +30,11 @@
     </van-tabs>
 
     <van-tabbar v-model="tabActive" active-color="#f00" fixed>
-      <van-tabbar-item icon="home-o" :to="{ name:'works', params: { pid: $store.state.pid } }">首页</van-tabbar-item>
+      <van-tabbar-item icon="home-o" :to="{ name:'works', params: { pid: $store.state.pid } }">首页
+      </van-tabbar-item>
       <van-tabbar-item icon="like-o" size="20" @click.once="vote_btn()">投票</van-tabbar-item>
-      <van-tabbar-item icon="friends-o" :to="{ name:'ranking', params: { pid: $store.state.pid } }">排行榜</van-tabbar-item>
+      <van-tabbar-item icon="friends-o" :to="{ name:'ranking', params: { pid: $store.state.pid } }">排行榜
+      </van-tabbar-item>
     </van-tabbar>
 
     <h1>
@@ -44,6 +46,7 @@
 <script>
 import Personal from "@/components/Personal";
 import ShowPage from "@/components/Show";
+import Weixin from '../utils/VoteWeixin'
 
 export default {
   name: "detail",
@@ -55,12 +58,26 @@ export default {
       tabActive: 0,
       detailData: []
     };
+  }, watch: {
+    $route: {
+      handler: function (val, oldVal) {
+        console.log(val);
+        this.WeixinShare();
+      },
+      // 深度观察监听
+      deep: true
+    }
   },
   mounted: function () {
     this.detail_id = this.$route.params.id
     this.getDetail();
+    Weixin.share('我叫chenrj我正在参加*****', '简介', 'http://vote.crjblog.cn/uploads/20190422/4b7fbfaecda8003908d5dc13cac9c494.jpg');
   },
   methods: {
+    WeixinShare: function () {
+      console.log('更新地址detail');
+      Weixin.share('我叫chenrj我正在参加*****', '简介', 'http://vote.crjblog.cn/uploads/20190422/4b7fbfaecda8003908d5dc13cac9c494.jpg');
+    },
     onClickTab() {
       // this.$router.push("/detail/show");
     },
@@ -76,7 +93,7 @@ export default {
       }).then(function (res) {
         if (res.code == 1) {
           self.getDetail();
-          self.$toast(res.msg);
+          // self.$toast(res.msg);
         } else {
           self.$toast(res.msg);
         }
@@ -94,7 +111,7 @@ export default {
         console.log(res.data);
         if (res.code == 1) {
           self.detailData = res.data;
-          self.$toast(res.msg);
+          // self.$toast(res.msg);
           document.title = self.detailData.title;
         } else {
           self.$toast("请求错误,数据返回失败!!");

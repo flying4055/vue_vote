@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import Weixin from '../utils/VoteWeixin'
 export default {
   name: "works",
   data() {
@@ -76,17 +77,35 @@ export default {
       listData: [],
     };
   },
+  watch: {
+    $route: {
+      handler: function (val, oldVal) {
+        console.log(val);
+        this.WeixinShare();
+      },
+      // 深度观察监听
+      deep: true
+    }
+  },
   mounted: function () {
     this.getInfo();
     this.getList();
-    // console.log(document.title);
+    var image = '';
+    if (this.banners) {
+      image = this.banners[0]['image'];
+    }
+    this.WeixinShare();
   },
   methods: {
+    WeixinShare: function () {
+      console.log('更新分享地址');
+      Weixin.share('**活动投票开始请大家关注投票选手', '活动简介', 'http://vote.crjblog.cn/uploads/20190422/4b7fbfaecda8003908d5dc13cac9c494.jpg');
+    },
     onSearch() {
       this.getList();
     },
     // 获取活动信息
-    getInfo() {
+    async getInfo() {
       let self = this;
       this.$axios
         .get("/api/event/get_info/id/" + this.$route.params.pid)
@@ -97,9 +116,6 @@ export default {
             self.active_info = res.data;
             self.banners = res.data.banner;
             document.title = self.active_info.name;
-            // self.$toast("请求成功");
-          } else {
-            self.$toast("请求错误,数据返回失败!!");
           }
         }).catch((err) => {
           console.log(err)
@@ -118,8 +134,6 @@ export default {
         if (res.code === 1) {
           console.log(res.data);
           self.listData = res.data;
-        } else {
-          // self.$toast("请求错误,数据返回失败!!");
         }
       }).catch(function (err) {
         console.log(err)
@@ -133,7 +147,7 @@ export default {
 };
 </script>
 
-<style scoped >
+<style scoped>
 .list-box {
   display: grid;
   grid-template-columns: 50% 50%;
