@@ -29,13 +29,24 @@
       </van-tab>
     </van-tabs>
 
-    <van-tabbar v-model="tabActive" active-color="#f00" fixed>
+    <!-- <van-tabbar v-model="tabActive" active-color="#f00" fixed>
       <van-tabbar-item icon="home-o" :to="{ name:'works', params: { pid: $store.state.pid } }">首页
       </van-tabbar-item>
       <van-tabbar-item icon="like-o" size="20" @click.once="vote_btn()">投票</van-tabbar-item>
       <van-tabbar-item icon="friends-o" :to="{ name:'ranking', params: { pid: $store.state.pid } }">排行榜
       </van-tabbar-item>
-    </van-tabbar>
+    </van-tabbar> -->
+
+    <div class="vote_tab">
+      <div class="vote_tab_item" @click="go_home()">首页</div>
+      <div class="vote_tab_item">
+        <div class="vote_like" @click="vote_btn()">
+          <van-icon name="like" size="50px" :color="likeColor" />
+          <div>投票</div>
+        </div>
+      </div>
+      <div class="vote_tab_item" @click="go_ranking()">排行榜</div>
+    </div>
 
     <h1>
       <br>
@@ -56,7 +67,8 @@ export default {
       detail_id: 0,
       active: 0,
       tabActive: 0,
-      detailData: []
+      detailData: [],
+      likeColor: '#ccc'
     };
   }, watch: {
     $route: {
@@ -81,6 +93,12 @@ export default {
     onClickTab() {
       // this.$router.push("/detail/show");
     },
+    go_home() {
+      this.$router.push({ name: 'works', params: { pid: this.$store.state.pid } });
+    },
+    go_ranking() {
+      this.$router.push({ name: 'ranking', params: { pid: this.$store.state.pid } });
+    },
     onTapApply() {
       this.$router.push({ name: "apply", params: { pid: this.$store.state.pid } });
       this.$store.commit('set_active', 1)
@@ -93,7 +111,7 @@ export default {
       }).then(function (res) {
         if (res.code == 1) {
           self.getDetail();
-          // self.$toast(res.msg);
+          self.likeColor = "#ff0b55"
         } else {
           self.$toast(res.msg);
         }
@@ -123,4 +141,57 @@ export default {
 </script>
 
 <style scoped>
+@keyframes heartbeat {
+  0% {
+    transform: scale(0.8, 0.8);
+    opacity: 1;
+  }
+  25% {
+    transform: scale(1, 1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.8, 0.8);
+    opacity: 1;
+  }
+}
+
+.vote_tab {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  background-color: #fafafa;
+  /* overflow: hidden; */
+  position: fixed;
+  bottom: 0;
+}
+
+.vote_tab_item {
+  flex: 1;
+  text-align: center;
+  line-height: 50px;
+  color: #777;
+  font-size: 14px;
+}
+
+.vote_like {
+  margin-top: 8px;
+  height: 20px;
+  position: relative;
+}
+
+.vote_like i {
+  position: absolute;
+  top: -32px;
+  left: 30%;
+  /* animation: heartbeat 1s infinite; */
+}
+
+.vote_like i:active {
+  position: absolute;
+  top: -32px;
+  left: 30%;
+  animation: heartbeat 1s infinite;
+}
 </style>
