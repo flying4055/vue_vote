@@ -85,12 +85,12 @@ export default {
   mounted: function () {
     this.detail_id = this.$route.params.id
     this.getDetail();
-    Weixin.share('我叫chenrj我正在参加*****', '简介', 'http://vote.crjblog.cn/uploads/20190422/4b7fbfaecda8003908d5dc13cac9c494.jpg');
+    Weixin.share(document.title, '简介', document.getElementsByTagName('img')[0].src);
   },
   methods: {
     WeixinShare: function () {
       console.log('更新地址detail');
-      Weixin.share('我叫chenrj我正在参加*****', '简介', 'http://vote.crjblog.cn/uploads/20190422/4b7fbfaecda8003908d5dc13cac9c494.jpg');
+      Weixin.share(document.title, '简介', document.getElementsByTagName('img')[0].src);
     },
     onClickTab() {
       // this.$router.push("/detail/show");
@@ -131,7 +131,7 @@ export default {
         if (res.code == 1) {
           self.detailData = res.data;
           self.likeColor = res.data.is_vote;
-          document.title = self.detailData.title;
+          window.document.title = self.detailData.title;
         } else {
           self.$toast("请求错误,数据返回失败!!");
         }
