@@ -1,48 +1,26 @@
 <template>
   <div>
-    <form class="form" v-on:submit.prevent="onSubmit()">
-      <div class="form-group">
-        <div class="form-item">
-          <label for="">手机号码</label>
-          <input type="text" name="mobile" placeholder="请输入手机号" v-model="formData.mobile" required maxlength="11">
+    <form class="form">
+      <van-cell-group>
+        <van-field v-model="formData.title" required label="作品名称" placeholder="请输入作品名称" maxlength="10" />
+        <van-field v-model="formData.mobile" type="number" required label="手机号码" placeholder="请输入手机号码" maxlength="11" />
+        <van-field v-model="formData.user_intro" required label="用户简介" type="textarea" placeholder="请输入用户简介" rows="1" autosize maxlength="150" />
+        <van-field v-model="formData.content" required label="作品简介" type="textarea" placeholder="请输入作品简介" rows="1" autosize maxlength="150" />
+        <van-field v-model="formData.video_url" label="作品视频" placeholder="请输入视频地址(选填)" />
+      </van-cell-group>
+      <van-panel title="图片上传">
+        <div style="text-align:center;">
+          <van-uploader v-if="formData.images == '' " name="uploader" :after-read="onRead">
+            <van-icon name="photo-o" size="120px" color="#ddd" />
+          </van-uploader>
+          <img :src="formData.images" alt="">
         </div>
+      </van-panel>
+      <br>
+      <div style="text-align:center;">
+        <van-button type="primary" @click="onSubmit()" style="width: 92%;">确认提交</van-button>
+      </div>
 
-        <div class="form-item form-item-textarea">
-          <label for="textarea">用户简介</label>
-          <textarea name="user_intro" id='textarea' contenteditable="true" v-model="formData.user_intro" required placeholder="请输入作品简介" cols="20" rows="3" maxlength="150"></textarea>
-        </div>
-        <div class="form-item">
-          <label for="">作品名称</label>
-          <input type="text" name="title" placeholder="请输入作品名称" v-model="formData.title" required maxlength="15">
-        </div>
-        <div class="form-item form-item-textarea">
-          <label for="textarea">作品简介</label>
-          <textarea name="user_intro" id='textarea' contenteditable="true" v-model="formData.content" required placeholder="请输入作品简介" cols="20" rows="3" maxlength="150"></textarea>
-        </div>
-        <div class="form-item">
-          <label for="">作品视频</label>
-          <input type="text" name="video" placeholder="请填写视频地址 (选填)" v-model="formData.video_url">
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="form-item" style="display: block;">
-          <label for="">
-            上传图片
-            <van-uploader name="image" :after-read="onRead" accept="image/png, image/jpeg" style="float:right;">
-              <van-icon name="plus" size="18px" color="#ff5959" />
-            </van-uploader>
-          </label>
-          <br>
-          <div class="form-item">
-            <label for="">图片地址</label>
-            <input type="text" placeholder="点击 '加号' 添加图片" :value="formData.images" disabled style="overflow: hidden;">
-          </div>
-          <div style="display: block;background:#fafafa;min-height:80px;">
-            <img :src="formData.images" style="width:100%;">
-          </div>
-        </div>
-      </div>
-      <van-button type="primary" @type.native="submit" style="width: 100%;">确认提交</van-button>
     </form>
   </div>
 </template>
@@ -70,7 +48,26 @@ export default {
     onSubmit() {
       let self = this;
       let inputData = this.formData;
-      if (inputData.images == null) {
+      console.log(inputData.images);
+
+      if (inputData.title == "") {
+        self.$toast('作品标题不能没有哦')
+        return false;
+      }
+      if (inputData.mobile == "") {
+        self.$toast('手机号码不能没有哦')
+        return false;
+      }
+
+      if (inputData.user_intro == "") {
+        self.$toast('用户简介不能没有哦')
+        return false;
+      }
+      if (inputData.content == "") {
+        self.$toast('作品简介不能没有哦')
+        return false;
+      }
+      if (inputData.images == "" || inputData.images == null) {
         self.$toast('作品图片不能没有哦')
         return false;
       }
@@ -81,7 +78,7 @@ export default {
           console.log(res);
           if (res.code == 1) {
             self.$toast(res.msg);
-            this.$router.push({ name: "home", params: { pid: this.$store.state.pid } });
+            self.$router.push({ name: "home", params: { pid: this.$store.state.pid } });
           } else {
             self.$toast(res.msg);
           }
@@ -120,14 +117,14 @@ export default {
 .form {
   font-size: 14px;
   box-sizing: border-box;
-  padding: 10px 8px;
+  /* padding: 10px 14px; */
 }
 
 .form-group {
-  padding: 10px;
+  padding: 14px;
   margin-bottom: 16px;
-  box-shadow: 0 0 10px #ddd;
-  border-radius: 5px;
+  box-shadow: 0 0 10px #ebedf0;
+  /* border-radius: 5px; */
 }
 
 .form-item {
@@ -150,7 +147,7 @@ export default {
   flex: 1;
   border: none;
   padding: 0 8px;
-  background-color: #fafafa;
+  background-color: #ebedf0;
 }
 
 .form-item textarea {
@@ -158,11 +155,17 @@ export default {
   line-height: 2;
   border: none;
   resize: none;
-  background-color: #fafafa;
+  background-color: #ebedf0;
 }
 
 .form-item textarea::placeholder {
   flex: 1;
   line-height: 2;
+}
+
+.image-box {
+  display: block;
+  background: #ebedf0;
+  min-height: 80px;
 }
 </style>

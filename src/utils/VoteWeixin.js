@@ -10,7 +10,7 @@ var VoteWeixin = {
     axios.get('/api/weixin/jsSignature', { params: { url: _url } }).then((res) => {
       if (res.code == 200) {
         let resData = res.data;
-        // console.log(resData);
+        console.log(resData);
         wechat.config({
           appId: resData.appId,
           debug: resData.debug,
@@ -19,35 +19,38 @@ var VoteWeixin = {
           signature: resData.signature,
           timestamp: resData.timestamp
         });
-
         wechat.ready(function () {
-          let self = this;
+          console.log(self.$route)
           let params = window.location.href.split('#');
-          // console.error('params', params[0].split('/'));
           var url = 'http://' + params[0].split('/')[2] + '/#' + params[1];
-          // console.error('url--->', url);
+          let wx_title = title || window.document.title;
+          let wx_desc = desc || "来自投票公众号的分享";
+          let wx_url = url;
+          let wx_image = image;
+          console.log(wx_title)
+          console.log(wx_desc)
+          console.log(wx_url)
+          console.log(wx_image)
           wechat.onMenuShareAppMessage({
-            title: title, // 分享标题
-            desc: desc, // 分享描述
-            link: url, // 分享链接
-            imgUrl: image, // 分享图标
+            title: wx_title, // 分享标题
+            desc: wx_desc, // 分享描述
+            link: wx_url, // 分享链接
+            imgUrl: wx_image, // 分享图标
             success: function (res) {
               // 用户确认分享后执行的回调函数
               console.log(res)
             }
           });
           wechat.onMenuShareTimeline({
-            title: title, // 分享标题
-            link: url, // 分享链接
-            imgUrl: image, // 分享图标
+            title: wx_title, // 分享标题
+            link: wx_url, // 分享链接
+            imgUrl: wx_image, // 分享图标
             success: function (res) {
               // 用户确认分享后执行的回调函数
               console.log(res)
             }
           })
         });
-
-
       }
     }).catch((err) => {
       console.log(err);

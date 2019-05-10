@@ -10,11 +10,6 @@ import wechat from "weixin-js-sdk";
 
 export default {
   name: "App",
-  provide() {
-    return {
-      app: this
-    };
-  },
   mounted() {
     // let self = this;
     // let _url = encodeURIComponent(window.location.href.split('#')[0]);
@@ -31,6 +26,7 @@ export default {
     //       timestamp: resData.timestamp
     //     })
     //   }
+
     // }).catch((err) => {
     //   console.log(err);
     // })

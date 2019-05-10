@@ -64,7 +64,8 @@
 </template>
 
 <script>
-import Weixin from '../utils/VoteWeixin'
+import wechat from '../utils/VoteWeixin.js'
+
 export default {
   name: "works",
   data() {
@@ -81,7 +82,7 @@ export default {
     $route: {
       handler: function (val, oldVal) {
         console.log(val);
-        this.WeixinShare();
+        // this.WeixinShare();
       },
       // 深度观察监听
       deep: true
@@ -94,13 +95,17 @@ export default {
     if (this.banners) {
       image = this.banners[0]['image'];
     }
-    this.WeixinShare();
+
+    this.$nextTick(function () {
+      wechat.share(document.title, '简介', document.getElementsByTagName('img')[0].src || '');
+    })
+
   },
   methods: {
-    WeixinShare: function () {
-      console.log('更新分享地址');
-      Weixin.share('**活动投票开始请大家关注投票选手', '活动简介', 'http://vote.crjblog.cn/uploads/20190422/4b7fbfaecda8003908d5dc13cac9c494.jpg');
-    },
+    // WeixinShare: function () {
+    //   console.log('更新分享地址');
+    //   // Weixin.share(document.title, '简介', document.getElementsByTagName('img')[0].src);
+    // },
     onSearch() {
       this.getList();
     },

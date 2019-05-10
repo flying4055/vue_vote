@@ -4,20 +4,22 @@
       <van-col span="12">
         <div @click="onTapApply()">我也要报名</div>
       </van-col>
-      <van-col span="12">帮TA拉票</van-col>
+      <van-col span="12">
+        <div @click="onTapGem()">礼物助力</div>
+      </van-col>
     </van-row>
     <van-row type="flex" justify="center" style="padding:18px 0;text-align:center;background-color:#f0f5f9;">
       <van-col span="8">
         <van-row>排名</van-row>
-        <van-row v-text="detailData.rank">查看排名</van-row>
+        <van-row><span v-text="detailData.rank">查看排名</span></van-row>
       </van-col>
       <van-col span="8">
         <van-row>票数</van-row>
-        <van-row v-text="detailData.vote_num">0</van-row>
+        <van-row><span v-text="detailData.vote_num">0</span></van-row>
       </van-col>
       <van-col span="8">
         <van-row>热度</van-row>
-        <van-row v-text="detailData.hot_num">0</van-row>
+        <van-row> <span v-text="detailData.hot_num">0</span></van-row>
       </van-col>
     </van-row>
     <van-tabs v-model="active">
@@ -28,15 +30,6 @@
         <personal :data="detailData"></personal>
       </van-tab>
     </van-tabs>
-
-    <!-- <van-tabbar v-model="tabActive" active-color="#f00" fixed>
-      <van-tabbar-item icon="home-o" :to="{ name:'works', params: { pid: $store.state.pid } }">首页
-      </van-tabbar-item>
-      <van-tabbar-item icon="like-o" size="20" @click.once="vote_btn()">投票</van-tabbar-item>
-      <van-tabbar-item icon="friends-o" :to="{ name:'ranking', params: { pid: $store.state.pid } }">排行榜
-      </van-tabbar-item>
-    </van-tabbar> -->
-
     <div class="vote_tab">
       <div class="vote_tab_item" @click="go_home()">首页</div>
       <div class="vote_tab_item">
@@ -47,7 +40,6 @@
       </div>
       <div class="vote_tab_item" @click="go_ranking()">排行榜</div>
     </div>
-
     <h1>
       <br>
     </h1>
@@ -57,7 +49,7 @@
 <script>
 import Personal from "@/components/Personal";
 import ShowPage from "@/components/Show";
-import Weixin from '../utils/VoteWeixin'
+import wechat from '../utils/VoteWeixin.js'
 
 export default {
   name: "detail",
@@ -76,22 +68,20 @@ export default {
     $route: {
       handler: function (val, oldVal) {
         console.log(val);
-        this.WeixinShare();
+        // this.WeixinShare();
       },
       // 深度观察监听
       deep: true
     }
   },
   mounted: function () {
-    this.detail_id = this.$route.params.id
-    this.getDetail();
-    Weixin.share(document.title, '简介', document.getElementsByTagName('img')[0].src);
+    this.$nextTick(function () {
+      this.detail_id = this.$route.params.id
+      this.getDetail();
+      wechat.share(document.title, '简介', document.getElementsByTagName('img')[0] ? document.getElementsByTagName('img')[0].src : '');
+    })
   },
   methods: {
-    WeixinShare: function () {
-      console.log('更新地址detail');
-      Weixin.share(document.title, '简介', document.getElementsByTagName('img')[0].src);
-    },
     onClickTab() {
       // this.$router.push("/detail/show");
     },
@@ -104,6 +94,9 @@ export default {
     onTapApply() {
       this.$router.push({ name: "apply", params: { pid: this.$store.state.pid } });
       this.$store.commit('set_active', 1)
+    },
+    onTapGem() {
+      this.$router.push({ name: "gem", params: { pid: this.$store.state.pid } });
     },
     vote_btn() {
       let self = this;
