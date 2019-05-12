@@ -6,14 +6,12 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    user: {
-      id: ""
-    },
     token: "" || Cookies.get("token"),
     beforeLoginUrl: "" || Cookies.get("beforeLoginUrl"),
     count: 0,
     active: 0,
     pid: 1,
+    works_id: 0,
     db: null,
     default_img: "../assets/default.png"
   },
@@ -30,8 +28,8 @@ const store = new Vuex.Store({
     set_pid(state, value) {
       state.pid = value;
     },
-    set_db(state, value) {
-      state.db = value;
+    set_works_id(state, value) {
+      state.works_id = value;
     }
   }
 });

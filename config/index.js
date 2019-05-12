@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: "/",
     proxyTable: {
       "/api": {
-        target: "http://vote.crjblog.cn", //设置你调用的接口域名和端口号 别忘了加http
+        target: "http://www.ssjunjun.com/", //设置你调用的接口域名和端口号 别忘了加http
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/" //比如我要调用'http://40.00.100.100:3002/user/add'，直接写‘/api/user/add’即可

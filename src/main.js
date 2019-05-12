@@ -10,7 +10,7 @@ import qs from "qs";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
-axios.defaults.baseURL = "http://vote.crjblog.cn";
+axios.defaults.baseURL = "http://www.ssjunjun.com/";
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   // console.log(token);

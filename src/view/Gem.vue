@@ -5,14 +5,14 @@
       <div class="gem-btn-group">
         <div class="gem-btn-item" v-for="item in pay_list" :key="item.id">
           <div class="gem-btn" v-bind:class="{ btnActive: item.isBtnActive }" @click="onClickBtn(item)">
-            <span>{{item.price}} &nbsp;</span>
+            <span>{{item.price + '00'}} &nbsp;</span>
             <van-icon name="gem-o" color="#2f89fc" size="18px" />
           </div>
         </div>
       </div>
       <van-button type="primary" size="large" @click="clickPayBtn()">微信支付</van-button>
       <div class="tips">
-        <p>提示 : 1 钻石 = 1元</p>
+        <p>提示 : 100 钻石 = 1元</p>
       </div>
     </div>
 
@@ -22,18 +22,22 @@
 <script>
 import Weixin from '../utils/VoteWeixin'
 
+// 100 200  500 1000 2000 9900
+
 export default {
   name: 'gem',
   data() {
     return {
       currentPrice: '',
+      currentVote_id: this.$store.state.pid,
+      currentWorks_id: this.$store.state.works_id,
       pay_list: [
-        { id: 1, price: 100, isBtnActive: 0 },
-        { id: 2, price: 200, isBtnActive: 0 },
-        { id: 3, price: 300, isBtnActive: 0 },
-        { id: 4, price: 400, isBtnActive: 0 },
-        { id: 5, price: 500, isBtnActive: 0 },
-        { id: 6, price: 600, isBtnActive: 0 }
+        { id: 1, price: 1, isBtnActive: 0 },
+        { id: 2, price: 5, isBtnActive: 0 },
+        { id: 3, price: 10, isBtnActive: 0 },
+        { id: 4, price: 20, isBtnActive: 0 },
+        { id: 5, price: 50, isBtnActive: 0 },
+        { id: 6, price: 99, isBtnActive: 0 }
       ]
     }
   },
@@ -52,12 +56,17 @@ export default {
       this.currentPrice = e;
     },
     clickPayBtn: function () {
+      let self = this;
       if (this.currentPrice == false) {
         this.$dialog.alert({ message: '请先选择充值多少钻石' })
         return false;
       }
-      this.$toast(`恭喜您成功充值 ${this.currentPrice.price} 钻石`)
-      // Weixin.payment();
+      let vote_id = this.currentVote_id;
+      let works_id = this.currentWorks_id;
+      let amount = this.currentPrice.price;
+      // this.$toast(`恭喜您成功充值 ${this.currentPrice.price} 钻石`)
+      Weixin.payment(vote_id, works_id, amount);
+      // Weixin.payOrder(self.currentPrice.price);
     }
   }
 }
