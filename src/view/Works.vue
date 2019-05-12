@@ -91,7 +91,6 @@
 		mounted: function () {
 			this.getInfo();
 			this.getList();
-			var image = "";
 			if (this.banners) {
 				this.imgLink = this.banners[0]["image"];
 			}
