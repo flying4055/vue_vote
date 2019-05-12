@@ -91,19 +91,8 @@
 		mounted: function () {
 			this.getInfo();
 			this.getList();
-			if (this.banners) {
-				this.imgLink = this.banners[0]["image"];
-			}
-			this.WeixinShare();
 		},
 		methods: {
-			WeixinShare: function () {
-				let self = this;
-				console.log("更新分享地址");
-				// Weixin.share(document.title, "简介", self.imgLink);
-				Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
-
-			},
 			onSearch() {
 				this.getList();
 			},
@@ -118,9 +107,9 @@
 							self.$store.commit("set_db", res.data);
 							self.active_info = res.data;
 							self.banners = res.data.banner;
+							self.imgLink = self.banners[0]["image"];
 							document.title = self.active_info.name;
 							Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
-
 							// self.$toast("请求成功");
 						} else {
 							self.$toast("请求错误,数据返回失败!!");

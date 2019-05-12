@@ -82,15 +82,8 @@
 			this.detail_id = this.$route.params.id;
 			this.$store.commit("set_works_id", this.$route.params.id);
 			this.getDetail();
-			// this.WeixinShare();
 		},
 		methods: {
-			WeixinShare: function () {
-				let self = this;
-        console.log("更新地址detail");
-							// Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
-
-			},
 			onClickTab() {
 				// this.$router.push("/detail/show");
 			},
