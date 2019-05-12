@@ -57,57 +57,36 @@ var VoteWeixin = {
     });
   },
   payOrder: function (vote_id = 0, works_id = 0, amount = 0) {
-    let self = this;
-    let _url = encodeURIComponent(window.location.href.split('#')[0]);
-    let params = { params: { url: _url } };
-    axios.get('/api/weixin/jsSignature', params).then((res) => {
-      if (res.code == 200) {
-        let resData = res.data;
-        console.log(resData);
-        wechat.config({
-          appId: resData.appId,
-          debug: resData.debug,
-          jsApiList: resData.jsApiList,
-          nonceStr: resData.nonceStr,
-          signature: resData.signature,
-          timestamp: resData.timestamp
-        });
-
-        wechat.ready(function () {
-
-          let params = {
-            vote_id: vote_id,
-            works_id: works_id,
-            amount: amount
-          }
-          axios.post("/api/event/pay", params).then(function (res) {
-            console.log(res);
-            wechat.chooseWXPay({
-              appId: res.data.appId,
-              timestamp: res.data.timestamp, // 支付签名时间戳
-              nonceStr: res.data.nonceStr, // 支付签名随机串，不长于32 位
-              package: res.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-              signType: "MD5", // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-              paySign: res.data.paySign, // 支付签名
-              success: function (res) {
-                //支付成功
-                console.log(res)
-                console.log('支付成功')
-                // window.location.href = ''
-              },
-              cancel: function (res) {
-                //支付取消
-                console.log(res)
-                console.log('支付取消')
-              }
-            });
-          })
-
-        })
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
+    let params = {
+      vote_id: vote_id,
+      works_id: works_id,
+      amount: amount
+    }
+    axios.post("/api/event/pay", params).then(function (res) {
+    // 触发微信支付
+    WeixinJSBridge.invoke(
+      'getBrandWCPayRequest', {
+        appId: res.data.appId,
+        timestamp: res.data.timestamp, // 支付签名时间戳
+        nonceStr: res.data.nonceStr, // 支付签名随机串，不长于32 位
+        package: res.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+        signType: "MD5", // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+        paySign: res.data.paySign, // 支付签名
+      },
+      function (res) {
+        if (res.err_msg == "get_brand_wcpay_request:ok") {
+          // 支付成功 返回成功页
+          // let tempUrl = "//paysucc"
+          // location.href = tempUr
+          alert("支付成功")
+        } else {
+          //  取消支付或者其他情况 get_brand_wcpay_request:cancel get_brand_wcpay_request:fail
+          // let tempUrl = '//topay'
+          // location.href = tempUrl
+          alert("取消支付")
+        }
+      })
+    })
   },
 
   payment: function (vote_id = 0, works_id = 0, amount = 0) {
