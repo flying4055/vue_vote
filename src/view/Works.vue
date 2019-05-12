@@ -74,12 +74,13 @@
 				searchVal: "",
 				page: 1,
 				banners: null,
-				listData: []
+				listData: [],
+				imgLink: ''
 			};
 		},
 		watch: {
 			$route: {
-				handler: function(val, oldVal) {
+				handler: function (val, oldVal) {
 					console.log(val);
 					this.WeixinShare();
 				},
@@ -87,23 +88,22 @@
 				deep: true
 			}
 		},
-		mounted: function() {
+		mounted: function () {
 			this.getInfo();
 			this.getList();
 			var image = "";
 			if (this.banners) {
-				image = this.banners[0]["image"];
+				this.imgLink = this.banners[0]["image"];
 			}
 			this.WeixinShare();
 		},
 		methods: {
-			WeixinShare: function() {
+			WeixinShare: function () {
+				let self = this;
 				console.log("更新分享地址");
-				Weixin.share(
-					document.title,
-					"活动简介",
-					document.getElementsByTagName("img")[0].src || ""
-				);
+				// Weixin.share(document.title, "简介", self.imgLink);
+				Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
+
 			},
 			onSearch() {
 				this.getList();
@@ -113,13 +113,15 @@
 				let self = this;
 				this.$axios
 					.get("/api/event/get_info/id/" + this.$route.params.pid)
-					.then(function(res) {
+					.then(function (res) {
 						console.log(res.data);
 						if (res.code === 1) {
 							self.$store.commit("set_db", res.data);
 							self.active_info = res.data;
 							self.banners = res.data.banner;
 							document.title = self.active_info.name;
+							Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
+
 							// self.$toast("请求成功");
 						} else {
 							self.$toast("请求错误,数据返回失败!!");
@@ -140,7 +142,7 @@
 							page: self.page
 						}
 					})
-					.then(function(res) {
+					.then(function (res) {
 						if (res.code === 1) {
 							console.log(res.data);
 							self.listData = res.data;
@@ -148,7 +150,7 @@
 							// self.$toast("请求错误,数据返回失败!!");
 						}
 					})
-					.catch(function(err) {
+					.catch(function (err) {
 						console.log(err);
 					});
 			},

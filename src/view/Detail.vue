@@ -62,6 +62,7 @@
 				active: 0,
 				tabActive: 0,
 				detailData: [],
+				imgLink: '',
 				likeColor: 0,
 				Color1: "#ff0b55",
 				Color2: "#ccc"
@@ -69,7 +70,7 @@
 		},
 		watch: {
 			$route: {
-				handler: function(val, oldVal) {
+				handler: function (val, oldVal) {
 					console.log(val);
 					this.WeixinShare();
 				},
@@ -77,20 +78,18 @@
 				deep: true
 			}
 		},
-		mounted: function() {
+		mounted: function () {
 			this.detail_id = this.$route.params.id;
 			this.$store.commit("set_works_id", this.$route.params.id);
 			this.getDetail();
-			this.WeixinShare();
+			// this.WeixinShare();
 		},
 		methods: {
-			WeixinShare: function() {
-				console.log("更新地址detail");
-				Weixin.share(
-					document.title,
-					"简介",
-					document.getElementsByTagName("img")[0].src || ""
-				);
+			WeixinShare: function () {
+				let self = this;
+        console.log("更新地址detail");
+							// Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
+
 			},
 			onClickTab() {
 				// this.$router.push("/detail/show");
@@ -127,7 +126,7 @@
 						works_id: self.detail_id,
 						vote_id: self.$store.state.pid
 					})
-					.then(function(res) {
+					.then(function (res) {
 						if (res.code == 1) {
 							self.getDetail();
 							self.$toast(res.msg);
@@ -135,7 +134,7 @@
 							self.$toast(res.msg);
 						}
 					})
-					.catch(function(err) {
+					.catch(function (err) {
 						console.log(err.msg);
 					});
 			},
@@ -147,12 +146,14 @@
 							id: self.$route.params.id
 						}
 					})
-					.then(function(res) {
+					.then(function (res) {
 						console.log(res.data);
 						if (res.code == 1) {
 							self.detailData = res.data;
 							self.likeColor = res.data.is_vote;
+							self.imgLink = res.data.images;
 							document.title = self.detailData.title;
+							Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
 						} else {
 							self.$toast("请求错误,数据返回失败!!");
 						}

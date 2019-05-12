@@ -66,7 +66,6 @@ export default {
       let amount = this.currentPrice.price;
       // this.$toast(`恭喜您成功充值 ${this.currentPrice.price} 钻石`)
       Weixin.payment(vote_id, works_id, amount);
-      // Weixin.payOrder(vote_id, works_id, amount);
     }
   }
 }
