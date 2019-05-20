@@ -19,6 +19,9 @@ const store = new Vuex.Store({
     set_token(state, value) {
       state.token = value;
     },
+    set_db(state, value) {
+      state.db = value;
+    },
     set_beforeLoginUrl(state, value) {
       state.beforeLoginUrl = value;
     },
