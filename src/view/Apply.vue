@@ -67,7 +67,6 @@ export default {
       inputData.vote_id = this.$store.state.pid;
       inputData.images = this.img_list.join(',');
       console.log(inputData);
-      return false;
       this.$axios.post("/api/event/add_works", inputData)
         .then(function (res) {
           console.log(res);

@@ -49,12 +49,15 @@
     </h1>
     <!-- music -->
     <div class="music-box">
-      <div class="music-tools">
-        <img class="rotate_music" style="width: 100%" src="../assets/music.png" alt="">
-        <av-circle :outline-width="0" :progress-width="5" :outline-meter-space="5" :playtime="true" playtime-font="18px Monaco" :audio-src="music_url" autoplay></av-circle>
+      <div class="music-tools" @click="onClickPlay()">
+        <audio :src="music_url" autoplay></audio>
+        <img v-bind:class="{ rotate_music: music_play }" style="width: 100%" src="../assets/music.png" alt="">
       </div>
     </div>
     <!-- music -->
+    <!-- 投诉 -->
+    <div class="complain-box" @click="onClickComplain()">投诉</div>
+    <!-- 投诉 -->
   </div>
 </template>
 
@@ -67,9 +70,8 @@ export default {
   components: { Personal, ShowPage },
   data() {
     return {
-      // music_url: '../assets/music/music.mp3',
-      music_url: '../../static/music.mp3',
-      music_play: 'autoplay',
+      music_url: '../static/music.mp3',
+      music_play: true,
       detail_id: 0,
       active: 0,
       tabActive: 0,
@@ -86,8 +88,20 @@ export default {
     this.getDetail();
   },
   methods: {
-    onClickTab() {
-      // this.$router.push("/detail/show");
+    // 投诉
+    onClickComplain() {
+      this.$router.push({ name: "complain" });
+    },
+    // 音乐播放
+    onClickPlay() {
+      let x = document.getElementsByTagName('Audio')[0];
+      if (x.paused) {
+        x.play();
+        this.music_play = true;
+      } else {
+        x.pause()
+        this.music_play = false;
+      }
     },
     go_home() {
       this.$router.push({
@@ -233,12 +247,28 @@ export default {
   }
 }
 
+.complain-box {
+  position: fixed;
+  top: 38px;
+  left: 15px;
+  width: 38px;
+  height: 38px;
+  border-radius: 100%;
+  overflow: hidden;
+  z-index: 99;
+  text-align: center;
+  line-height: 38px;
+  color: #fff;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
 .music-box {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
+  top: 38px;
+  right: 15px;
+  width: 45px;
+  height: 45px;
   border-radius: 100%;
   overflow: hidden;
   z-index: 9999;
