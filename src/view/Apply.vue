@@ -1,19 +1,27 @@
 <template>
   <div>
-    <form class="form">
+    <div class="form" onSubmit="false">
       <van-cell-group>
-        <van-field v-model="formData.title" required label="作品名称" placeholder="请输入作品名称" maxlength="10" />
-        <van-field v-model="formData.mobile" type="number" required label="手机号码" placeholder="请输入手机号码" maxlength="11" />
-        <van-field v-model="formData.user_intro" required label="用户简介" type="textarea" placeholder="请输入用户简介" rows="1" autosize maxlength="150" />
-        <van-field v-model="formData.content" required label="作品简介" type="textarea" placeholder="请输入作品简介" rows="1" autosize maxlength="150" />
-        <van-field v-model="formData.video_url" label="作品视频" placeholder="请输入视频地址(选填)" />
+        <van-field v-model="formData.title" label="作品名称" placeholder="请输入作品名称" maxlength="10" />
+        <van-field v-model="formData.mobile" type="number" label="手机号码" placeholder="请输入手机号码" maxlength="11" />
+        <van-field v-model="formData.user_name" label="你的姓名" placeholder="请输入你的姓名" maxlength="10" />
+        <van-field v-model="formData.user_intro" label="自我介绍" type="textarea" placeholder="请输入自我介绍" rows="1" autosize maxlength="150" />
+        <van-field v-model="formData.content" label="作品简介" type="textarea" placeholder="请输入作品简介" rows="1" autosize maxlength="150" />
+        <van-field v-model="formData.video_url" label="作品视频" placeholder="请输入视频地址" />
       </van-cell-group>
       <van-panel title="图片上传">
-        <div style="text-align:center;">
-          <van-uploader v-if="formData.images == '' " name="uploader" :after-read="onRead">
-            <van-icon name="photo-o" size="120px" color="#ddd" />
-          </van-uploader>
-          <img :src="formData.images" alt="">
+        <div style="text-align:center;padding: 14px;">
+          <div>
+            <p v-for="item of img_list" :key="item">
+              <img style="width: 100%;" :src="item" alt="">
+            </p>
+          </div>
+          <p>
+            <van-uploader v-if="img_list.length < 3" name="uploader" multiple :after-read="onRead">
+              <van-icon name="add-o" size="30px" color="#ddd" />
+            </van-uploader>
+          </p>
+
         </div>
       </van-panel>
       <br>
@@ -21,7 +29,7 @@
         <van-button type="primary" @click="onSubmit()" style="width: 92%;">确认提交</van-button>
       </div>
 
-    </form>
+    </div>
   </div>
 </template>
 
@@ -37,8 +45,10 @@ export default {
         'content': '',
         'mobile': '',
         'user_intro': '',
+        'user_name': '',
         'video_url': ''
       },
+      img_list: []
     };
   },
   mounted() {
@@ -50,29 +60,14 @@ export default {
       let inputData = this.formData;
       console.log(inputData.images);
 
-      if (inputData.title == "") {
-        self.$toast('作品标题不能没有哦')
-        return false;
-      }
-      if (inputData.mobile == "") {
-        self.$toast('手机号码不能没有哦')
-        return false;
-      }
-
-      if (inputData.user_intro == "") {
-        self.$toast('用户简介不能没有哦')
-        return false;
-      }
-      if (inputData.content == "") {
-        self.$toast('作品简介不能没有哦')
-        return false;
-      }
-      if (inputData.images == "" || inputData.images == null) {
+      if (this.img_list.length <= 0) {
         self.$toast('作品图片不能没有哦')
         return false;
       }
       inputData.vote_id = this.$store.state.pid;
+      inputData.images = this.img_list.join(',');
       console.log(inputData);
+      return false;
       this.$axios.post("/api/event/add_works", inputData)
         .then(function (res) {
           console.log(res);
@@ -99,8 +94,8 @@ export default {
           if (res.code == 1) {
             console.log(res.data.url);
             console.log(self.formData);
-            self.formData.images = res.data.url;
             self.$toast(res.msg);
+            self.img_list.push(res.data.url);
           } else {
             self.$toast(res.msg);
           }
@@ -118,54 +113,5 @@ export default {
   font-size: 14px;
   box-sizing: border-box;
   /* padding: 10px 14px; */
-}
-
-.form-group {
-  padding: 14px;
-  margin-bottom: 16px;
-  box-shadow: 0 0 10px #ebedf0;
-  /* border-radius: 5px; */
-}
-
-.form-item {
-  padding: 10px 0;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.form-item label {
-  width: 70px;
-  min-height: 2rem;
-  line-height: 2rem;
-}
-
-.form-item-textarea {
-  display: block;
-}
-
-.form-item input {
-  flex: 1;
-  border: none;
-  padding: 0 8px;
-  background-color: #ebedf0;
-}
-
-.form-item textarea {
-  width: 100%;
-  line-height: 2;
-  border: none;
-  resize: none;
-  background-color: #ebedf0;
-}
-
-.form-item textarea::placeholder {
-  flex: 1;
-  line-height: 2;
-}
-
-.image-box {
-  display: block;
-  background: #ebedf0;
-  min-height: 80px;
 }
 </style>

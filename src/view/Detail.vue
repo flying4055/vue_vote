@@ -1,20 +1,27 @@
 <template>
   <div>
-    <van-row style="background-color:#fff;padding:18px 0;text-align:center;">
-      <div @click="onTapApply()">我也要报名</div>
-    </van-row>
+    <div style="display: flex;background-color:#fff;padding:18px 0;text-align:center;">
+      <div style="flex: 1;" @click="onTapApply()">我也要报名</div>
+      <div style="flex: 1;" @click="go_ranking()">排行榜</div>
+    </div>
     <van-row type="flex" justify="center" style="padding:18px 0;text-align:center;background-color:#f0f5f9;">
       <van-col span="8">
         <van-row>排名</van-row>
-        <van-row><span v-text="detailData.rank">查看排名</span></van-row>
+        <van-row>
+          <span v-text="detailData.rank">查看排名</span>
+        </van-row>
       </van-col>
       <van-col span="8">
         <van-row>票数</van-row>
-        <van-row><span v-text="detailData.vote_num">0</span></van-row>
+        <van-row>
+          <span v-text="detailData.vote_num">0</span>
+        </van-row>
       </van-col>
       <van-col span="8">
         <van-row>热度</van-row>
-        <van-row> <span v-text="detailData.hot_num">0</span></van-row>
+        <van-row>
+          <span v-text="detailData.hot_num">0</span>
+        </van-row>
       </van-col>
     </van-row>
     <van-tabs v-model="active">
@@ -60,7 +67,8 @@ export default {
   components: { Personal, ShowPage },
   data() {
     return {
-      music_url: '../assets/music/music.mp3',
+      // music_url: '../assets/music/music.mp3',
+      music_url: '../../static/music.mp3',
       music_play: 'autoplay',
       detail_id: 0,
       active: 0,
@@ -71,16 +79,6 @@ export default {
       Color1: "#ff0b55",
       Color2: "#ccc"
     };
-  },
-  watch: {
-    $route: {
-      handler: function (val, oldVal) {
-        console.log(val);
-        this.WeixinShare();
-      },
-      // 深度观察监听
-      deep: true
-    }
   },
   mounted: function () {
     this.detail_id = this.$route.params.id;
@@ -127,6 +125,16 @@ export default {
           if (res.code == 1) {
             self.getDetail();
             self.$toast(res.msg);
+            // 询问是否购买道具
+            self.dialog.confirm({
+              title: '提示',
+              message: `是否为${self.detailData.username}使用礼物助力`
+            }).then(() => {
+              // on confirm
+              self.onTapGem();
+            }).catch(() => {
+              // on cancel
+            });
           } else {
             self.$toast(res.msg);
           }
@@ -150,7 +158,7 @@ export default {
             self.likeColor = res.data.is_vote;
             self.imgLink = res.data.images;
             document.title = self.detailData.title;
-            Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
+            Weixin.share(self.detailData.share_title, self.detailData.share_desc, self.detailData.share_image);
           } else {
             self.$toast("请求错误,数据返回失败!!");
           }

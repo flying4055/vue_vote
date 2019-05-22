@@ -34,22 +34,18 @@
     </van-row>
     <!-- 作品列表 -->
     <div class="list-box" v-if="listData.length > 0">
-      <div class="list-item" v-for="item in listData" :key="item.id">
-        <div class="list-item-content">
-          <div class="list-item-img" @click="onVote_btn(item.id)">
-            <div class="list-item-vote_num">
-              <span v-text="item.id"></span>号&nbsp;
-              <span v-text="item.vote_num"></span>票
-            </div>
-            <img :src="item.images" width="100%">
+      <div class="list-item" v-for="item in listData" :key="item.id" @click="onVote_btn(item.id)">
+        <div class="list-item-vote_num">
+          <span v-text="item.id"></span>号&nbsp;
+          <span v-text="item.vote_num"></span>票
+        </div>
+        <img :src="item.images" width="100%">
+        <div class="list-item-footer">
+          <div class="list-item-footer-title">
+            <span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
+            《<span v-text="item.title?item.title:'作品'+item.id "></span>》
           </div>
-          <div class="list-item-footer">
-            <div class="list-item-footer-title">
-              <span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
-              《<span v-text="item.title?item.title:'作品'+item.id "></span>》
-            </div>
-            <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
-          </div>
+          <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
         </div>
       </div>
       <div class="loading">加载更多...</div>
@@ -78,16 +74,6 @@ export default {
       imgLink: ''
     };
   },
-  watch: {
-    $route: {
-      handler: function (val, oldVal) {
-        console.log(val);
-        this.WeixinShare();
-      },
-      // 深度观察监听
-      deep: true
-    }
-  },
   mounted: function () {
     this.getInfo();
     this.getList();
@@ -109,7 +95,7 @@ export default {
             self.banners = res.data.banner;
             self.imgLink = self.banners[0]["image"];
             document.title = self.active_info.name;
-            Weixin.share(document.title, "来自杉杉互娱公众号的分享", self.imgLink);
+            Weixin.share(self.active_info.share_title, self.active_info.share_desc, self.active_info.share_image);
             // self.$toast("请求成功");
           } else {
             self.$toast("请求错误,数据返回失败!!");
@@ -149,30 +135,29 @@ export default {
 
 <style scoped>
 .list-box {
-  display: grid;
-  grid-template-columns: 50% 50%;
   justify-items: space-around;
   background-color: #f5f5f5;
   box-sizing: border-box;
   margin-bottom: 10px;
-  padding: 10px 2px 16px;
+  padding: 14px 8px;
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+  column-gap: 8px;
 }
 
 .list-item {
-  padding: 3px;
-  margin-bottom: 10px;
-}
-
-.list-item-content {
-  min-height: 3rem;
-  padding: 2px;
+  padding: 4px;
+  margin-top: 8px;
+  break-inside: avoid;
+  box-sizing: border-box;
   background-color: #fff;
-  box-shadow: 0 0 15px #d0d9ef;
+  box-shadow: 0 0 10px #d0d9ef;
+  position: relative;
 }
 
-.list-item-img {
-  overflow: hidden;
-  position: relative;
+.list-item:first-child {
+  margin-top: 0;
 }
 
 .list-item-vote_num {
@@ -182,29 +167,36 @@ export default {
   color: #fff;
   height: 1.4rem;
   line-height: 1.4rem;
-  border-bottom-right-radius: 10px;
+  border-bottom-right-radius: 8px;
   position: absolute;
-  top: 1px;
-  left: 1px;
+  top: 4px;
+  left: 4px;
   background-color: rgba(0, 0, 0, 0.3);
 }
 
 .list-item-footer {
-  height: 2rem;
-  line-height: 2rem;
-  font-size: 14px;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   text-align: center;
+  overflow: hidden;
 }
 
 .list-item-footer-title {
   flex: 1;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 12px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .list-item-footer-btn {
   width: 55px;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 14px;
   color: #fff;
   background-color: #f38181;
 }
