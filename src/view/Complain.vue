@@ -2,18 +2,12 @@
   <div class="complain">
     <div class="title">选择投诉该网页的原因 :</div>
     <div class="item">
-      <p>页面包含欺诈信息(如:假红包)</p>
-      <p>页面包含色情信息</p>
-      <p>页面包含暴力恐怖信息</p>
-      <p>页面包含政治敏感信息</p>
-      <p>页面在搜集个人隐私信息(如:钓鱼链接)</p>
-      <p>页面包含诱导分享/关注性质的内容</p>
-      <p>页面可能包谣言信息</p>
+      <p v-for="item of list" :key="item.id" v-bind:class="{ select: item.isSelect }">{{item.text}}</p>
     </div>
     <div class="title">详情描述</div>
     <div class="textarea-box">
-      <textarea name="" id="textarea" rows="6" v-model="content" autofocus placeholder="请输入投诉详情" maxlength="200"></textarea>
-      <div class="font-num">{{content.length}}/200</div>
+      <textarea name="" id="textarea" rows="6" v-model="description" autofocus placeholder="请输入投诉详情" maxlength="200"></textarea>
+      <div class="font-num">{{description.length}}/200</div>
     </div>
     <div class="title">
       <div class="btn-submit" @click="submit">提交</div>
@@ -40,17 +34,49 @@ export default {
   name: "complain",
   data() {
     return {
-      content: '',
-      show: false
+      show: false,
+      type: "",
+      description: "",
+      list: [
+        { id: 1, text: '页面包含欺诈信息(如:假红包)', isSelect: 0 },
+        { id: 2, text: '页面包含色情信息', isSelect: 0 },
+        { id: 3, text: '页面包含暴力恐怖信息', isSelect: 0 },
+        { id: 4, text: '页面包含政治敏感信息', isSelect: 0 },
+        { id: 5, text: '页面在搜集个人隐私信息(如:钓鱼链接)', isSelect: 0 },
+        { id: 6, text: '页面包含诱导分享/关注性质的内容', isSelect: 0 },
+        { id: 7, text: '页面可能包谣言信息', isSelect: 0 },
+      ]
     }
   },
   methods: {
     submit: function () {
       this.show = true;
+      let params = {
+        type: this.type,
+        description: this.description
+      };
+      this.$axios.post("/api/event/complaint", params
+      ).then((res) => {
+        console.log(res);
+      })
     },
     colsePopup: function () {
       this.$router.go(-1);
-    }
+    },
+    onClickBtn: function (e) {
+      if (e.isSelect === 1) {
+        e.isSelect = 0;
+        this.type = '';
+        return false;
+      }
+      let list_arr = this.list;
+      for (let item in list_arr) {
+        list_arr[item].isSelect = 0;
+      }
+      e.isSelect = 1;
+      this.type = e.text;
+    },
+
   }
 }
 </script>
@@ -84,6 +110,10 @@ export default {
 
 .item p:last-child {
   border-bottom: none;
+}
+
+.select {
+  background-color: cadetblue;
 }
 
 .textarea-box {
