@@ -2,7 +2,9 @@
   <div class="complain">
     <div class="title">选择投诉该网页的原因 :</div>
     <div class="item">
-      <p v-for="item of list" :key="item.id" v-bind:class="{ select: item.isSelect }">{{item.text}}</p>
+      <div v-for="item of list" :key="item.id" v-bind:class="{ select: item.isSelect }" @click="onClickBtn(item)" style="padding: 0 14px;">
+        <p>{{item.text}}</p>
+      </div>
     </div>
     <div class="title">详情描述</div>
     <div class="textarea-box">
@@ -94,7 +96,6 @@ export default {
 }
 
 .item {
-  padding: 0 14px;
   background-color: #fff;
 }
 
@@ -113,7 +114,7 @@ export default {
 }
 
 .select {
-  background-color: cadetblue;
+  background-color: #eaeaea;
 }
 
 .textarea-box {

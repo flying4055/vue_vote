@@ -86,6 +86,9 @@ export default {
     this.detail_id = this.$route.params.id;
     this.$store.commit("set_works_id", this.$route.params.id);
     this.getDetail();
+    if (this.$store.state.db.music_file !== "") {
+      this.music_url = this.$store.state.db.music_file
+    }
   },
   methods: {
     // 投诉

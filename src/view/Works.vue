@@ -56,6 +56,18 @@
       <van-panel title="活动介绍"></van-panel>
     </van-row>
     <div style="padding:3px 14px;line-height:28px;color:#666;" v-text="active_info.desc"></div>
+
+    <!-- music -->
+    <div class="music-box">
+      <div class="music-tools" @click="onClickPlay()">
+        <audio :src="music_url" autoplay></audio>
+        <img v-bind:class="{ rotate_music: music_play }" style="width: 100%" src="../assets/music.png" alt="">
+      </div>
+    </div>
+    <!-- music -->
+    <!-- 投诉 -->
+    <div class="complain-box" @click="onClickComplain()">投诉</div>
+    <!-- 投诉 -->
   </div>
 </template>
 
@@ -71,7 +83,9 @@ export default {
       page: 1,
       banners: null,
       listData: [],
-      imgLink: ''
+      imgLink: '',
+      music_url: '../static/music.mp3',
+      music_play: true,
     };
   },
   mounted: function () {
@@ -79,6 +93,21 @@ export default {
     this.getList();
   },
   methods: {
+    // 投诉
+    onClickComplain() {
+      this.$router.push({ name: "complain" });
+    },
+    // 音乐播放
+    onClickPlay() {
+      let x = document.getElementsByTagName('Audio')[0];
+      if (x.paused) {
+        x.play();
+        this.music_play = true;
+      } else {
+        x.pause()
+        this.music_play = false;
+      }
+    },
     onSearch() {
       this.getList();
     },
@@ -93,6 +122,9 @@ export default {
             self.$store.commit("set_db", res.data);
             self.active_info = res.data;
             self.banners = res.data.banner;
+            if (res.data.music_file !== "") {
+              self.music_url = res.data.music_file;
+            }
             self.imgLink = self.banners[0]["image"];
             document.title = self.active_info.name;
             Weixin.share(self.active_info.share_title, self.active_info.share_desc, self.active_info.share_image);
@@ -214,5 +246,49 @@ export default {
   text-align: center;
   color: #ccc;
   background-color: rgba(0, 0, 0, 0);
+}
+
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(-360deg);
+  }
+}
+
+.complain-box {
+  position: fixed;
+  top: 38px;
+  left: 15px;
+  width: 38px;
+  height: 38px;
+  border-radius: 100%;
+  overflow: hidden;
+  z-index: 99;
+  text-align: center;
+  line-height: 38px;
+  color: #fff;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.music-box {
+  position: fixed;
+  top: 38px;
+  right: 15px;
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.music-tools {
+  position: relative;
+}
+
+.music-tools .rotate_music {
+  animation: rotate 8s linear 1s infinite alternate;
 }
 </style>
