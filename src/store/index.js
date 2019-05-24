@@ -13,11 +13,15 @@ const store = new Vuex.Store({
     pid: 1,
     works_id: 0,
     db: null,
+    notice_text: '',
     default_img: "../assets/default.png"
   },
   mutations: {
     set_token(state, value) {
       state.token = value;
+    },
+    set_notice_text(state, value) {
+      state.notice_text = value;
     },
     set_db(state, value) {
       state.db = value;

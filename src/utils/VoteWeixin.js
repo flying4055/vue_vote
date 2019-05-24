@@ -47,7 +47,7 @@ var VoteWeixin = {
     }).catch((err) => {
     });
   },
-  payment: function (vote_id = 0, works_id = 0, amount = 0) {
+  payment: function (works_id = 0, amount = 0) {
     let self = this;
     let _url = encodeURIComponent(window.location.href.split('#')[0]);
     axios.get('/api/weixin/jsSignature', { params: { url: _url } }).then((res) => {
@@ -63,7 +63,7 @@ var VoteWeixin = {
         });
         wechat.ready(function () {
           let params = {
-            vote_id: vote_id,
+            // vote_id: vote_id,
             works_id: works_id,
             amount: amount
           }

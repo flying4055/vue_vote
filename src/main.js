@@ -40,9 +40,6 @@ Vue.prototype.qs = qs;
 import Cookies from "js-cookie";
 Vue.prototype.$Cookies = Cookies;
 
-import AudioVisual from 'vue-audio-visual'
-
-Vue.use(AudioVisual)
 // 关闭提示
 Vue.config.productionTip = false;
 

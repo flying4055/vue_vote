@@ -1,6 +1,6 @@
 <template>
   <div style="font-size:14px;">
-    <van-notice-bar text="活动开始投票时间为：5月19号晚6点开始，5月24号晚9点结束，每人每天可以投3票，分别投给不同的3个学员。人人有奖，希望大家踊跃参与哦！" left-icon="volume-o" />
+    <van-notice-bar :text="$store.state.notice_text" left-icon="volume-o" />
     <van-row>
       <van-swipe :autoplay="3000" indicator-color="#ff5959">
         <van-swipe-item v-for="(item, index) in banners" :key="index">
@@ -123,6 +123,7 @@ export default {
             self.$store.commit("set_db", res.data);
             self.active_info = res.data;
             self.banners = res.data.banner;
+            self.$store.commit("set_notice_text",res.data.notice_text);
             if (res.data.music_file !== "") {
               self.music_url = res.data.music_file;
             }

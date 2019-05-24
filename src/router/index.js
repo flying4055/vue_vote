@@ -70,7 +70,7 @@ const router = new Router({
     },
     // 礼物助力 gem
     {
-      path: "/gem",
+      path: "/gem/:works_id",
       hidden: true,
       name: "gem",
       component: () => import("@/view/Gem"),
