@@ -126,7 +126,7 @@
 			onTapGem() {
 				this.$router.push({
 					name: "gem",
-					params: { works_id: this.detailData.vote_id }
+					params: { works_id: this.detailData.id }
 				});
 			},
 			vote_btn() {
