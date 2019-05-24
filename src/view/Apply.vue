@@ -17,7 +17,7 @@
             </p>
           </div>
           <p>
-            <van-uploader v-if="img_list.length < 3" name="uploader" multiple :after-read="onRead">
+            <van-uploader v-if="img_list.length < 3" name="uploader" :after-read="onRead">
               <van-icon name="add-o" size="30px" color="#ddd" />
             </van-uploader>
           </p>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <van-notice-bar text="活动开始投票时间为：5月19号晚6点开始，5月24号晚9点结束，每人每天可以投3票，分别投给不同的3个学员。人人有奖，希望大家踊跃参与哦！" left-icon="volume-o" />
     <div style="display: flex;background-color:#fff;padding:18px 0;text-align:center;">
       <div style="flex: 1;" @click="onTapApply()">我也要报名</div>
       <div style="flex: 1;" @click="go_ranking()">排行榜</div>
@@ -157,7 +158,6 @@ export default {
           }
         })
         .catch(function (err) {
-          console.log(err.msg);
         });
     },
     async getDetail() {
@@ -169,7 +169,6 @@ export default {
           }
         })
         .then(function (res) {
-          console.log(res.data);
           if (res.code == 1) {
             self.detailData = res.data;
             self.likeColor = res.data.is_vote;

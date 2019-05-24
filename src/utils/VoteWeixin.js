@@ -10,7 +10,6 @@ var VoteWeixin = {
     axios.get('/api/weixin/jsSignature', { params: { url: _url } }).then((res) => {
       if (res.code == 200) {
         let resData = res.data;
-        console.log(resData);
         wechat.config({
           appId: resData.appId,
           debug: resData.debug,
@@ -20,19 +19,12 @@ var VoteWeixin = {
           timestamp: resData.timestamp
         });
         wechat.ready(function () {
-          console.log('当前URL', self.$route)
           let params = window.location.href.split('#');
           let url = 'http://' + params[0].split('/')[2] + '/#' + params[1];
-          console.log('当前URL', params)
-          
           let wx_title = title || document.title;
           let wx_desc = desc || "来自杉杉互娱公众号的分享";
           let wx_url = url;
           let wx_image = image || '';
-          console.log(wx_title)
-          console.log(wx_desc)
-          console.log(wx_url)
-          console.log(wx_image)
           wechat.onMenuShareAppMessage({
             title: wx_title, // 分享标题
             desc: wx_desc, // 分享描述
@@ -40,7 +32,6 @@ var VoteWeixin = {
             imgUrl: wx_image, // 分享图标
             success: function (res) {
               // 用户确认分享后执行的回调函数
-              console.log(res)
             }
           });
           wechat.onMenuShareTimeline({
@@ -49,13 +40,11 @@ var VoteWeixin = {
             imgUrl: wx_image, // 分享图标
             success: function (res) {
               // 用户确认分享后执行的回调函数
-              console.log(res)
             }
           })
         });
       }
     }).catch((err) => {
-      console.log(err);
     });
   },
   payment: function (vote_id = 0, works_id = 0, amount = 0) {
@@ -64,7 +53,6 @@ var VoteWeixin = {
     axios.get('/api/weixin/jsSignature', { params: { url: _url } }).then((res) => {
       if (res.code == 200) {
         let resData = res.data;
-        console.log(resData);
         wechat.config({
           appId: resData.appId,
           debug: resData.debug,
@@ -74,14 +62,12 @@ var VoteWeixin = {
           timestamp: resData.timestamp
         });
         wechat.ready(function () {
-          console.log('当前URL', self.$route)
           let params = {
             vote_id: vote_id,
             works_id: works_id,
             amount: amount
           }
           axios.post("/api/event/pay", params).then(function (res) {
-            console.log(res);
             wechat.chooseWXPay({
               appId: res.data.appId,
               timestamp: res.data.timestamp, // 支付签名时间戳
@@ -91,18 +77,12 @@ var VoteWeixin = {
               paySign: res.data.paySign, // 支付签名
               success: function (res) {
                 //支付成功
-                console.log(res)
-                console.log('支付成功')
-                // window.location.href = ''
               },
               cancel: function (res) {
                 //支付取消
-                console.log(res)
-                console.log('支付取消')
               }
             });
           }).catch(function (error) {
-            console.log(error);
           });
 
         })

@@ -1,5 +1,6 @@
 <template>
   <div style="font-size:14px;">
+    <van-notice-bar text="活动开始投票时间为：5月19号晚6点开始，5月24号晚9点结束，每人每天可以投3票，分别投给不同的3个学员。人人有奖，希望大家踊跃参与哦！" left-icon="volume-o" />
     <van-row>
       <van-swipe :autoplay="3000" indicator-color="#ff5959">
         <van-swipe-item v-for="(item, index) in banners" :key="index">

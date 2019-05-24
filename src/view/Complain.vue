@@ -63,6 +63,7 @@ export default {
       })
     },
     colsePopup: function () {
+      this.show = false;
       this.$router.go(-1);
     },
     onClickBtn: function (e) {
