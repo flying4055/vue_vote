@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<router-view></router-view>
+    <h3 v-if="cli" style="text-align:center;">请在微信客户端登陆!</h3>
 	</div>
 </template>
 
@@ -12,12 +13,13 @@
 		name: "login",
 		data() {
 			return {
+        cli: false,
 				user: "",
 				beforeLoginUrl: ""
 			};
 		},
 		created() {
-			document.title = "登陆 ...";
+			document.title = "登陆中...";
 
 			let ua = window.navigator.userAgent.toLowerCase();
 			console.log(ua.match(/MicroMessenger/i));
@@ -26,7 +28,9 @@
 				// 跳转到微信授权页面
 				window.location.href =
 					"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6a0eb033efd229c0&redirect_uri=http%3a%2f%2fwww.ssjunjun.com%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
-			}
+			} else{
+        this.cli = true;
+      }
 		}
 	};
 </script>
