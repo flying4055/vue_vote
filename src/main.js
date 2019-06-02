@@ -21,16 +21,20 @@ axios.interceptors.request.use((config) => {
 }, (error => {
   return Promise.reject(error);
 }));
+
 axios.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
-    if (response.data.code == 900) {
-      router.push('/login');
+    if (response.data.code === 900) {
+      localStorage.clear();
+      window.location.href = '/login'
     }
     return response.data;
   },
   function (error) {
     // 对响应错误做点什么
+    localStorage.clear();
+    window.location.href = '/login'
     return Promise.reject(error);
   }
 );

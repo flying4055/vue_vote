@@ -46,9 +46,6 @@
 				finished: false
 			};
 		},
-		mounted() {
-			this.fecthList()
-		},
 		methods: {
 			onLoad() {
 				this.loading = true;
@@ -62,15 +59,21 @@
 						if (res.code === 1) {
 							self.list = res.data;
 							self.loading = false;
-						} else {
-							console.log('请求错误,数据返回失败!!')
+							// self.$toast(res.msg);
 						}
-					})
+						if (res.code === 0) {
+							self.finished = true;
+						} else {
+							self.finished = true;
+						}
+					}).catch(function (err) {
+						localStorage.clear();
+						window.location.href = '/login'
+					});
 			},
 			// 获取日期字符串
 			getDateString(timestamp) {
 				return new Date(parseInt(timestamp) * 1000).toLocaleDateString().replace(/\//g, '-');
-				// return new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
 			},
 			// 截取字符串
 			getStringObj(value) {

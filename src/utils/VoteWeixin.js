@@ -1,6 +1,7 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
+import { Dialog } from 'vant';
 Vue.use(VueAxios, axios);
 import wechat from "weixin-js-sdk";
 var VoteWeixin = {
@@ -13,17 +14,20 @@ var VoteWeixin = {
         wechat.config({
           appId: resData.appId,
           debug: resData.debug,
-          jsApiList: resData.jsApiList,
           nonceStr: resData.nonceStr,
           signature: resData.signature,
-          timestamp: resData.timestamp
+          timestamp: resData.timestamp,
+          // jsApiList: resData.jsApiList,
+          jsApiList: [  // 用的方法都要加进来
+            'updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareTimeline', 'onMenuShareAppMessage'
+          ]
         });
         wechat.ready(function () {
           let params = window.location.href.split('#');
-          let url = 'http://' + params[0].split('/')[2] + '/#' + params[1];
+          let shareUrl = 'http://' + params[0].split('/')[2] + '/#' + params[1];
           let wx_title = title || document.title;
           let wx_desc = desc || "来自杉杉互娱公众号的分享";
-          let wx_url = url;
+          let wx_url = 'http://' + params[0].split('/')[2] + '/static/redirect.html?app3Redirect=' + encodeURIComponent(shareUrl);
           let wx_image = image || '';
           wechat.onMenuShareAppMessage({
             title: wx_title, // 分享标题
@@ -35,6 +39,24 @@ var VoteWeixin = {
             }
           });
           wechat.onMenuShareTimeline({
+            title: wx_title, // 分享标题
+            link: wx_url, // 分享链接
+            imgUrl: wx_image, // 分享图标
+            success: function (res) {
+              // 用户确认分享后执行的回调函数
+            }
+          });
+          // and 1.4.0
+          wechat.updateAppMessageShareData({
+            title: wx_title, // 分享标题
+            desc: wx_desc, // 分享描述
+            link: wx_url, // 分享链接
+            imgUrl: wx_image, // 分享图标
+            success: function (res) {
+              // 用户确认分享后执行的回调函数
+            }
+          });
+          wechat.updateTimelineShareData({
             title: wx_title, // 分享标题
             link: wx_url, // 分享链接
             imgUrl: wx_image, // 分享图标
