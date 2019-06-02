@@ -56,7 +56,7 @@
     <van-row>
       <van-panel title="活动介绍"></van-panel>
     </van-row>
-    <div style="padding:3px 14px;line-height:28px;color:#666;" v-text="active_info.desc"></div>
+    <div style="padding:3px 14px;line-height:28px;color:#666;" v-html="active_info.desc"></div>
 
     <!-- music -->
     <div class="music-box">

@@ -3,7 +3,7 @@
 		<van-row>
 			<van-panel title="活动介绍" desc="" status="状态"></van-panel>
 		</van-row>
-		<div style="padding:3px 14px;line-height:28px;color:#666;" v-text="$store.state.db.desc"></div>
+		<div style="padding:3px 14px;line-height:28px;color:#666;" v-html="$store.state.db.desc"></div>
 	</div>
 </template>
 
