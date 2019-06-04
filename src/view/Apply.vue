@@ -2,14 +2,14 @@
   <div>
     <div class="form" onSubmit="false">
       <van-cell-group>
-        <van-field v-model="formData.title" label="作品名称" placeholder="请输入作品名称" maxlength="10" />
-        <van-field v-model="formData.mobile" type="number" label="手机号码" placeholder="请输入手机号码" maxlength="11" />
-        <van-field v-model="formData.user_name" label="你的姓名" placeholder="请输入你的姓名" maxlength="10" />
-        <van-field v-model="formData.user_intro" label="自我介绍" type="textarea" placeholder="请输入自我介绍" rows="1" autosize maxlength="150" />
-        <van-field v-model="formData.content" label="作品简介" type="textarea" placeholder="请输入作品简介" rows="1" autosize maxlength="150" />
-        <van-field v-model="formData.video_url" label="作品视频" placeholder="请输入视频地址" />
+        <van-field v-model="formData.title" label="作品名称" placeholder="请输入作品名称(选填)" maxlength="10" />
+        <van-field v-model="formData.mobile" type="number" label="手机号码" placeholder="请输入手机号码(选填)" maxlength="11" />
+        <van-field v-model="formData.user_name" label="你的姓名" placeholder="请输入你的姓名(必填)" maxlength="10" />
+        <van-field v-model="formData.user_intro" label="自我介绍" type="textarea" placeholder="请输入自我介绍(选填)" rows="1" autosize maxlength="150" />
+        <van-field v-model="formData.content" label="作品简介" type="textarea" placeholder="请输入作品简介(选填)" rows="1" autosize maxlength="150" />
+        <van-field v-model="formData.video_url" label="作品视频" placeholder="请输入视频地址(选填)" />
       </van-cell-group>
-      <van-panel title="图片上传">
+      <van-panel title="图片上传(必填)">
         <div style="text-align:center;padding: 14px;">
           <div>
             <p v-for="item of img_list" :key="item">
@@ -60,6 +60,10 @@ export default {
       let inputData = this.formData;
       console.log(inputData.images);
 
+      if (this.user_name == '') {
+        self.$toast('必填项不能为空')
+        return false;
+      }
       if (this.img_list.length <= 0) {
         self.$toast('作品图片不能没有哦')
         return false;
