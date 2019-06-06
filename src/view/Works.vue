@@ -174,16 +174,17 @@ export default {
         if (res.code === 1) {
           if (res.data.length <= 0) {
             self.$toast('暂无更多作品');
-            self.page = 1;
+            --self.page
             return false;
           }
           if (self.page >= 2) {
-            self.listData.concat(res.data);
+            self.listData = self.listData.concat(res.data);
           } else {
             self.listData = res.data;
           }
         } else {
           self.$toast(res.msg);
+          --self.page
         }
       }).catch(function (err) {
         console.log(err);

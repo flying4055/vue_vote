@@ -41,6 +41,7 @@ export default {
       listData: "",
       start: 1,
       end: 10,
+      page: 1
     };
   },
   mounted() {
@@ -69,6 +70,7 @@ export default {
           params: {
             vote_id: localStorage.getItem('ranking_id'),
             start: self.start,
+            page: self.page,
             end: self.end
           }
         })
@@ -77,16 +79,17 @@ export default {
           if (res.code === 1) {
             if (res.data.length <= 0) {
               self.$toast('暂无更多作品');
-              self.start = 1;
+              --self.page
               return false;
             }
-            if (self.start >= 2) {
-              self.listData.concat(res.data);
+            if (self.page >= 2) {
+              self.listData = self.listData.concat(res.data);
             } else {
               self.listData = res.data;
             }
           } else {
-            // self.$toast(res.msg);
+            self.$toast(res.msg);
+            --self.page
           }
         });
     },
@@ -94,7 +97,7 @@ export default {
       this.$router.push({ name: "detail", params: { id: id } });
     },
     onLoading() {
-      this.start++
+      this.page++
       this.getRanking();
     }
   }
