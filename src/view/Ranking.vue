@@ -28,6 +28,7 @@
         </div>
       </div>
     </div>
+    <div class="loading" @click="onLoading">加载更多</div>
   </div>
 </template>
 
@@ -39,12 +40,19 @@ export default {
       action_id: 0,
       listData: "",
       start: 1,
-      end: 10
+      end: 10,
     };
   },
   mounted() {
-    this.action_id = this.$route.params.pid;
-    this.getRanking();
+    let self = this;
+
+    self.action_id = localStorage.getItem('ranking_id');
+    if (self.$route.params.pid !== undefined) {
+      self.action_id = self.$route.params.pid;
+      localStorage.setItem('ranking_id', self.action_id);
+    }
+
+    self.getRanking();
     document.title = "排行榜";
   },
   methods: {
@@ -59,16 +67,24 @@ export default {
       this.$axios
         .get("/api/event/rank", {
           params: {
-            vote_id: self.action_id,
+            vote_id: localStorage.getItem('ranking_id'),
             start: self.start,
             end: self.end
           }
         })
         .then(function (res) {
           console.log(res.data);
-          if (res.code == 1) {
-            self.listData = [];
-            self.listData = res.data;
+          if (res.code === 1) {
+            if (res.data.length <= 0) {
+              self.$toast('暂无更多作品');
+              self.start = 1;
+              return false;
+            }
+            if (self.start >= 2) {
+              self.listData.concat(res.data);
+            } else {
+              self.listData = res.data;
+            }
           } else {
             // self.$toast(res.msg);
           }
@@ -76,6 +92,10 @@ export default {
     },
     onRanking(id) {
       this.$router.push({ name: "detail", params: { id: id } });
+    },
+    onLoading() {
+      this.start++
+      this.getRanking();
     }
   }
 };
@@ -87,7 +107,7 @@ export default {
   padding: 10px 0;
   color: #f05a28;
   border-bottom: 1px solid #f05a28;
-  background-color: #fff;
+  background-color: #f8f8f8;
   text-align: center;
 }
 
@@ -146,36 +166,33 @@ export default {
   background-image: url("../assets/king.png");
   background-repeat: no-repeat;
   background-size: 60px;
-  background-position: 5px 4px;
+  background-position: 5px 0;
 }
 
 .item:nth-child(2) .item-img {
   background-image: url("../assets/king2.png");
   background-repeat: no-repeat;
   background-size: 60px;
-  background-position: 5px 4px;
+  background-position: 5px 0;
 }
 
 .item:nth-child(3) .item-img {
   background-image: url("../assets/king3.png");
   background-repeat: no-repeat;
   background-size: 60px;
-  background-position: 5px 4px;
+  background-position: 5px 0;
 }
 
 .item-img {
   display: flex;
   align-items: center;
-  background-repeat: no-repeat;
-  background-size: 60px;
-  background-position: 5px 2px;
 }
 
 .item-img img {
   margin: 0 auto;
   border: 1px solid #fff;
-  width: 64px;
-  height: 64px;
+  width: 58px;
+  height: 58px;
   border-radius: 100%;
   background-color: #fff;
   box-sizing: border-box;
@@ -201,5 +218,11 @@ export default {
 .item-right b {
   font-size: 1.45rem;
   align-self: flex-start;
+}
+
+.loading {
+  padding: 20px 0;
+  text-align: center;
+  color: #999;
 }
 </style>

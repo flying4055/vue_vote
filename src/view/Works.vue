@@ -34,21 +34,45 @@
       </van-search>
     </van-row>
     <!-- 作品列表 -->
-    <div class="list-box" v-if="listData.length > 0">
-      <div class="list-item" v-for="item in listData" :key="item.id" @click="onVote_btn(item.id)">
-        <div class="list-item-vote_num">
-          <span v-text="item.sort_id"></span>号&nbsp;
-          <span v-text="item.vote_num"></span>票
-        </div>
-        <img :src="item.images" width="100%">
-        <div class="list-item-footer">
-          <div class="list-item-footer-title">
-            <span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
-            《<span v-text="item.title?item.title:'作品'+item.id "></span>》
+    <div v-if="listData.length > 0">
+
+      <div class="list-box">
+        <ul class="list-box1">
+          <div class="list-item" v-for="(item, index) in listData" :key="item.id" v-if="index%2 != 1" @click="onVote_btn(item.id)">
+            <div class="list-item-vote_num">
+              <span v-text="item.sort_id"></span>号&nbsp;
+              <span v-text="item.vote_num"></span>票
+            </div>
+            <img :src="item.images" width="100%">
+            <div class="list-item-footer">
+              <div class="list-item-footer-title">
+                <span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
+                《<span v-text="item.title?item.title:'作品'+item.id "></span>》
+              </div>
+              <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
+            </div>
           </div>
-          <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
-        </div>
+        </ul>
+
+        <ul class="list-box2">
+          <div class="list-item" v-for="(item, index) in listData" :key="item.id" v-if="index%2 != 0" @click="onVote_btn(item.id)">
+            <div class="list-item-vote_num">
+              <span v-text="item.sort_id"></span>号&nbsp;
+              <span v-text="item.vote_num"></span>票
+            </div>
+            <img :src="item.images" width="100%">
+            <div class="list-item-footer">
+              <div class="list-item-footer-title">
+                <span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
+                《<span v-text="item.title?item.title:'作品'+item.id "></span>》
+              </div>
+              <div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
+            </div>
+          </div>
+        </ul>
+
       </div>
+      <div class="loading" @click="loadingPage">加载更多</div>
     </div>
     <div v-else class="loading">暂无作品展示</div>
     <!-- 活动介绍 -->
@@ -148,7 +172,16 @@ export default {
         }
       }).then(function (res) {
         if (res.code === 1) {
-          self.listData = res.data;
+          if (res.data.length <= 0) {
+            self.$toast('暂无更多作品');
+            self.page = 1;
+            return false;
+          }
+          if (self.page >= 2) {
+            self.listData.concat(res.data);
+          } else {
+            self.listData = res.data;
+          }
         } else {
           self.$toast(res.msg);
         }
@@ -159,6 +192,10 @@ export default {
     // 点击投票按钮时
     onVote_btn(id) {
       this.$router.push({ name: "detail", params: { id: id } });
+    },
+    loadingPage() {
+      this.page++
+      this.getList();
     }
   }
 };
@@ -168,21 +205,37 @@ export default {
 .list-box {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
   box-sizing: border-box;
-  padding: 14px 8px;
+  padding: 14px 0;
   background-color: #f5f5f5;
   justify-items: stretch;
   align-items: start;
 }
 
+.list-box1 {
+  padding: 0 4px;
+  margin: 0;
+  display: inline-block;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.list-box2 {
+  padding: 0 4px;
+  margin: 0;
+  display: inline-block;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
 .list-item {
-  padding: 4px;
+  /* width: 50vw; */
+  padding: 2px;
   box-sizing: border-box;
   background-color: #fff;
   box-shadow: 0 0 10px #d0d9ef;
   position: relative;
+  margin-bottom: 10px;
 }
 
 .list-item:first-child {
