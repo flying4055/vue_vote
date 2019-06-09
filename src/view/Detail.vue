@@ -146,7 +146,6 @@
 			},
 			vote_btn() {
 				let self = this;
-				return false;
 				this.$axios
 					.post("/api/event/vote", {
 						works_id: self.detail_id,
