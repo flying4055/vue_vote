@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="padding:3px 14px;line-height:28px;color:#666;">
+		<div style="padding:8px 0;line-height:28px;color:#666;">
 			<div class="video" v-if="data.video_url">
 				<video style="width:100%;" height="240" controls>
 					<source :src="data.video_url" type="video/mp4">

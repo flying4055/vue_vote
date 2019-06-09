@@ -59,6 +59,11 @@
 		<!-- 投诉 -->
 		<div class="complain-box" @click="onClickComplain()">投诉</div>
 		<!-- 投诉 -->
+
+		<van-dialog v-model="show" show-cancel-button :beforeClose='beforeClose'>
+			<img :src="gift_url">
+		</van-dialog>
+
 	</div>
 </template>
 
@@ -81,7 +86,9 @@
 				imgLink: '',
 				likeColor: 0,
 				Color1: "#ff0b55",
-				Color2: "#ccc"
+				Color2: "#ccc",
+				show: false,
+				gift_url: '../static/gift.jpg'
 			};
 		},
 		mounted: function () {
@@ -129,8 +136,17 @@
 					params: { works_id: this.detailData.id }
 				});
 			},
+			beforeClose(action, done) {
+				let self = this;
+				if (action === 'confirm') {
+					self.onTapGem();
+				} else if (action === 'cancel') {
+					done() //关闭
+				}
+			},
 			vote_btn() {
 				let self = this;
+				return false;
 				this.$axios
 					.post("/api/event/vote", {
 						works_id: self.detail_id,
@@ -141,15 +157,7 @@
 							self.getDetail();
 							self.$toast(res.msg);
 							// 询问是否购买道具
-							self.$dialog.confirm({
-								title: '提示',
-								message: `谢谢您的投票 是否继续礼物助力？`
-							}).then(() => {
-								// on confirm
-								self.onTapGem();
-							}).catch(() => {
-								// on cancel
-							});
+							self.show = true;
 						} else {
 							self.$toast(res.msg);
 						}
@@ -195,7 +203,7 @@
 		}
 		25% {
 			transform: scale(1, 1);
-			opacity: 0.8;
+			opacity: 0.9;
 		}
 		100% {
 			transform: scale(0.8, 0.8);
@@ -232,7 +240,7 @@
 		position: absolute;
 		top: -32px;
 		left: 30%;
-		/* animation: heartbeat 1s infinite; */
+		animation: heartbeat 1s infinite;
 	}
 
 	.vote_like i:active {
