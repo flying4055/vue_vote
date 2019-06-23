@@ -42,7 +42,8 @@
 					<div>投票</div>
 				</div>
 			</div>
-			<div class="vote_tab_item" @click="onTapGem()">礼物助力</div>
+			<div v-if="is_show" class="vote_tab_item" @click="onTapGem()">礼物助力</div>
+			<div v-else class="vote_tab_item" @click="go_ranking()">排行榜</div>
 		</div>
 
 		<h1>
@@ -62,6 +63,7 @@
 
 		<van-dialog v-model="show" show-cancel-button :beforeClose='beforeClose'>
 			<img :src="gift_url">
+			<div style="text-align:center;padding:8px 0;font-size: 14px;">投票成功</div>
 		</van-dialog>
 
 	</div>
@@ -88,7 +90,8 @@
 				Color1: "#ff0b55",
 				Color2: "#ccc",
 				show: false,
-				gift_url: '../static/gift.jpg'
+        gift_url: '../static/gift.jpg',
+        is_show: false
 			};
 		},
 		mounted: function () {
@@ -131,6 +134,7 @@
 				this.$store.commit("set_active", 1);
 			},
 			onTapGem() {
+				if (!this.is_time()) { return false; }
 				this.$router.push({
 					name: "gem",
 					params: { works_id: this.detailData.id }
@@ -145,49 +149,62 @@
 				}
 			},
 			vote_btn() {
+				if (!this.is_time()) { return false; }
 				let self = this;
-				this.$axios
-					.post("/api/event/vote", {
-						works_id: self.detail_id,
-						vote_id: self.detailData.vote_id
-					})
-					.then(function (res) {
-						if (res.code == 1) {
-							self.getDetail();
-							self.$toast(res.msg);
-							// 询问是否购买道具
-							self.show = true;
-						} else {
-							self.$toast(res.msg);
-						}
-					})
-					.catch(function (err) {
-					});
+				this.$axios.post("/api/event/vote", {
+					works_id: self.detail_id,
+					vote_id: self.detailData.vote_id
+				}).then(function (res) {
+					if (res.code == 1) {
+						self.getDetail();
+						self.$toast(res.msg);
+						// 询问是否购买道具
+						self.show = true;
+					} else {
+						self.$toast(res.msg);
+					}
+				}).catch(function (err) {
+					console.log(err)
+				});
 			},
 			async getDetail() {
 				let self = this;
-				this.$axios
-					.get("/api/event/get_works_info", {
-						params: {
-							id: self.$route.params.id
+				this.$axios.get("/api/event/get_works_info", { params: { id: self.$route.params.id } }).then(function (res) {
+					if (res.code == 1) {
+						self.detailData = res.data;
+						self.likeColor = res.data.is_vote;
+						self.imgLink = res.data.images;
+						let activeDb = res.data.event;
+						if (activeDb.music_file !== "") {
+							self.music_url = activeDb.music_file;
+							self.notice_text = activeDb.notice_text;
 						}
-					})
-					.then(function (res) {
-						if (res.code == 1) {
-							self.detailData = res.data;
-							self.likeColor = res.data.is_vote;
-							self.imgLink = res.data.images;
-							let activeDb = res.data.event;
-							if (activeDb.music_file !== "") {
-								self.music_url = activeDb.music_file;
-								self.notice_text = activeDb.notice_text;
-							}
-							document.title = self.detailData.title;
-							Weixin.share(self.detailData.share_title, self.detailData.share_desc, self.detailData.share_image);
-						} else {
-							self.$toast("请求错误,数据返回失败!!");
-						}
-					});
+						document.title = self.detailData.title;
+            Weixin.share(self.detailData.share_title, self.detailData.share_desc, self.detailData.share_image);
+            if(self.is_time()){
+              self.is_show = true;
+            }
+					} else {
+						self.$toast("请求错误,数据返回失败!!");
+					}
+				});
+			},
+			is_time() {
+				let self = this;
+				// 当前时间 小于 开始时间  活动尚未开始
+				// 当前时间 大于 结束时间  活动已结束
+				let event = this.detailData.event;
+				let date = new Date();
+				let start_time = parseInt(event.start_time) * 1000;
+				let end_time = parseInt(event.end_time) * 1000;
+				if (date.getTime() < start_time) {
+					self.$toast("活动尚未开始");
+					return false;
+				} else if (date.getTime() > end_time) {
+					self.$toast("活动已结束");
+					return false;
+				}
+				return true;
 			}
 		}
 	};

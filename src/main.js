@@ -33,8 +33,7 @@ axios.interceptors.response.use(
   },
   function (error) {
     // 对响应错误做点什么
-    localStorage.clear();
-    window.location.href = '/login'
+    console.log(error)
     return Promise.reject(error);
   }
 );
