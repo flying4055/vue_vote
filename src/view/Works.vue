@@ -115,17 +115,12 @@
 				imgLink: '',
 				music_url: '../static/music.mp3',
 				music_play: true,
-				count_down: '距离活动结束还有 1天3小时3分钟3秒'
+				count_down: ''
 			};
 		},
 		mounted: function () {
 			this.getInfo();
 			this.getList();
-			let self = this;
-			setTimeout(function () {
-				self.countDown();
-			}, 100)
-
 		},
 		methods: {
 			countDown() {
@@ -189,7 +184,8 @@
 							self.$store.commit("set_db", res.data);
 							self.active_info = res.data;
 							self.banners = res.data.banner;
-							self.$store.commit("set_notice_text", res.data.notice_text);
+              self.$store.commit("set_notice_text", res.data.notice_text);
+              self.countDown();
 							if (res.data.music_file !== "") {
 								self.music_url = res.data.music_file;
 							}
