@@ -61,9 +61,9 @@
 		<div class="complain-box" @click="onClickComplain()">投诉</div>
 		<!-- 投诉 -->
 
-		<van-dialog v-model="show" show-cancel-button :beforeClose='beforeClose'>
-			<img :src="gift_url">
-			<div style="text-align:center;padding:8px 0;font-size: 14px;">投票成功</div>
+		<van-dialog v-model="show" confirmButtonText="知道了" :beforeClose='beforeClose'>
+			<img :src="gift_url" @click="onTapGem()">
+			<div style="text-align:center;padding:8px 0;font-size: 16px;">投票成功</div>
 		</van-dialog>
 
 	</div>
@@ -90,8 +90,8 @@
 				Color1: "#ff0b55",
 				Color2: "#ccc",
 				show: false,
-        gift_url: '../static/gift.jpg',
-        is_show: false
+				gift_url: '../static/gift.jpg',
+				is_show: false
 			};
 		},
 		mounted: function () {
@@ -143,7 +143,8 @@
 			beforeClose(action, done) {
 				let self = this;
 				if (action === 'confirm') {
-					self.onTapGem();
+					// self.onTapGem();
+					done() //关闭
 				} else if (action === 'cancel') {
 					done() //关闭
 				}
@@ -180,10 +181,10 @@
 							self.notice_text = activeDb.notice_text;
 						}
 						document.title = self.detailData.title;
-            Weixin.share(self.detailData.share_title, self.detailData.share_desc, self.detailData.share_image);
-            if(self.is_time()){
-              self.is_show = true;
-            }
+						Weixin.share(self.detailData.share_title, self.detailData.share_desc, self.detailData.share_image);
+						if (self.is_time()) {
+							self.is_show = true;
+						}
 					} else {
 						self.$toast("请求错误,数据返回失败!!");
 					}
