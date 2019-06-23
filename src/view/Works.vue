@@ -144,15 +144,22 @@
 					return false;
 				}
 				setInterval(function () {
-					// 倒计时  = 结束时间 - 当前时间;
-					let count_down_time = end_time - new Date().getTime();
-					let down_date = new Date(count_down_time);
-					let M = down_date.getMonth() - 1 > 0 ? down_date.getMonth() - 1 + "月" : '';
-					let D = down_date.getDate();
-					let H = down_date.getHours();
-					let I = down_date.getMinutes();
-					let S = down_date.getSeconds();
-					self.count_down = `距离活动结束还有 ${M}${D}天${H}小时${I}分钟${S}秒`;
+          // 倒计时  = 结束时间 - 当前时间;
+          // 设置时区
+					var date = new Date(end_time);
+					var timezoneOffset = date.getTimezoneOffset();
+					date.setTime(date.getTime() + timezoneOffset * 60 * 1000 + 480 * 60 * 1000);
+					let count_down_time = date.getTime() - new Date().getTime();
+					let D = Math.floor(count_down_time / (24 * 3600 * 1000));
+					let leave1 = count_down_time % (24 * 3600 * 1000) //计算天数后剩余的毫秒数
+					let H = Math.floor(leave1 / (3600 * 1000))
+					//计算相差分钟数
+					let leave2 = leave1 % (3600 * 1000) //计算小时数后剩余的毫秒数
+					let I = Math.floor(leave2 / (60 * 1000))
+					//计算相差秒数
+					let leave3 = leave2 % (60 * 1000) //计算分钟数后剩余的毫秒数
+					let S = Math.round(leave3 / 1000)
+					self.count_down = `距离活动结束还有 ${D}天${H}小时${I}分钟${S}秒`;
 				}, 1000);
 			},
 			// 投诉
@@ -184,8 +191,8 @@
 							self.$store.commit("set_db", res.data);
 							self.active_info = res.data;
 							self.banners = res.data.banner;
-              self.$store.commit("set_notice_text", res.data.notice_text);
-              self.countDown();
+							self.$store.commit("set_notice_text", res.data.notice_text);
+							self.countDown();
 							if (res.data.music_file !== "") {
 								self.music_url = res.data.music_file;
 							}

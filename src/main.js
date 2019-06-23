@@ -27,12 +27,16 @@ axios.interceptors.response.use(
     // 对响应数据做点什么
     if (response.data.code === 900) {
       localStorage.clear();
-      window.location.href = '/login'
+      // window.location.href = '/login'
+      // window.location.href = "/#/login"
+      router.push({ name: "login" });
     }
     return response.data;
   },
   function (error) {
     // 对响应错误做点什么
+    router.push({ name: "login" });
+    // router.push({ name: "404" });
     console.log(error)
     return Promise.reject(error);
   }
