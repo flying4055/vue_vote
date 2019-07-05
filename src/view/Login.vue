@@ -27,7 +27,7 @@
 				console.log("跳转到微信授权页面");
 				// 跳转到微信授权页面
 				window.location.href =
-					"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6a0eb033efd229c0&redirect_uri=http%3a%2f%2fwww.ssjunjun.com%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
+					"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa6cbea2e7840e13d&redirect_uri=http%3a%2f%2ftest.ssjunjun.com%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
 			} else{
         this.cli = true;
       }
