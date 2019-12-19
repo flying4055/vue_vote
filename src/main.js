@@ -11,6 +11,7 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
 axios.defaults.baseURL = "http://test.ssjunjun.com/";
+// axios.defaults.baseURL = "http://yang.vote.test/";
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   // console.log(token);

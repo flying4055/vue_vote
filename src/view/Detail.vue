@@ -65,17 +65,25 @@
 			<img :src="gift_url" @click="onTapGem()">
 			<div style="text-align:center;padding:8px 0;font-size: 16px;">投票成功</div>
 		</van-dialog>
-
+    <div class="share_btn" @click="clickShare()">分享</div>
+    <van-popup v-model="showPopup" closeable position="bottom" :style="{ height: '50%' }">
+      <div style="height: 100%;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;background-image: linear-gradient( 135deg, #72EDF2 10%, #5151E5 100%);">
+        <img :src="qrcode" alt="">
+        <p>长按二维码分享</p>
+      </div>
+    </van-popup>
 	</div>
 </template>
 
 <script>
+  import QRCode from 'qrcode';
+  import { Popup } from 'vant';
 	import Personal from "@/components/Personal";
 	import ShowPage from "@/components/Show";
 	import Weixin from "../utils/VoteWeixin";
 	export default {
 		name: "detail",
-		components: { Personal, ShowPage },
+		components: { Personal, ShowPage},
 		data() {
 			return {
 				music_url: '../static/music.mp3',
@@ -91,15 +99,37 @@
 				Color2: "#ccc",
 				show: false,
 				gift_url: '../static/gift.jpg',
-				is_show: false
+        is_show: false,
+        showPopup:false,
+        qrcode:"",
+        url: `${window.location.href}`
 			};
-		},
+    },
 		mounted: function () {
 			this.detail_id = this.$route.params.id;
-			this.getDetail();
+      this.getDetail();
+      // 生成二维码
+      QRCode.toDataURL(this.url,{
+        version: 7,    //这个是版本号，
+        errorCorrectionLevel: 'Q', 	//这个是容错率,(建议选较低)更高的级别可以识别
+        width: 140,
+        height: 140,   //设置二维码图片大小
+        margin: 2,
+      })
+      .then(url => {   //这个url是二维码生成地址，也就是相当于图片地址
+        this.qrcode = url //这个是vue实例全局的变量，赋值给他。后面会用在img的src属性上
+      })
+      .catch(err => {
+      //console.error(err)  //这里看不懂的话去看一下Promise（then, catch）
+      })
 		},
 		methods: {
-			// 投诉
+			//
+			clickShare() {
+        this.showPopup = true;
+				// this.$router.push({ name: "complain" });
+      },
+      // 投诉
 			onClickComplain() {
 				this.$router.push({ name: "complain" });
 			},
@@ -213,6 +243,28 @@
 
 
 <style scoped>
+#qrcode_img {
+  width: 200px;
+  height: 200px;
+}
+
+.share_btn {
+  position:fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 1px;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 	@keyframes heartbeat {
 		0% {
 			transform: scale(0.8, 0.8);
@@ -280,13 +332,13 @@
 		position: fixed;
 		top: 38px;
 		left: 15px;
-		width: 38px;
-		height: 38px;
+		width: 32px;
+		height: 32px;
 		border-radius: 100%;
 		overflow: hidden;
 		z-index: 99;
 		text-align: center;
-		line-height: 38px;
+		line-height: 32px;
 		color: #fff;
 		font-size: 12px;
 		background-color: rgba(0, 0, 0, 0.4);
@@ -296,8 +348,8 @@
 		position: fixed;
 		top: 38px;
 		right: 15px;
-		width: 45px;
-		height: 45px;
+		width: 35px;
+		height: 35px;
 		border-radius: 100%;
 		overflow: hidden;
 		z-index: 9999;
