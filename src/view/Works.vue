@@ -49,7 +49,7 @@
 							<div class="list-item-footer">
 								<div class="list-item-footer-title">
 									<span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
-									《<span v-text="item.title?item.title:'作品'+item.id "></span>》
+									<span v-if="item.title">《{{item.title}}》</span>
 								</div>
 								<div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
 							</div>
@@ -68,7 +68,7 @@
 							<div class="list-item-footer">
 								<div class="list-item-footer-title">
 									<span v-text="item.user_name?item.user_name.substring(0, 3):'参与者'"></span>
-									《<span v-text="item.title?item.title:'作品'+item.id "></span>》
+									<span v-if="item.title">《{{item.title}}》</span>
 								</div>
 								<div class="list-item-footer-btn" @click="onVote_btn(item.id)">投票</div>
 							</div>
