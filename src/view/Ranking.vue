@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="vote-box" @click="onVote_loading()">票榜</div>
+    <div class="vote-box" @click="onVote_loading()">集赞榜</div>
     <div style="padding: 5px 0;text-align:center;color:#333;font-size:12px;">
       {{new Date().toLocaleString() }}
     </div>
@@ -12,8 +12,8 @@
         </div>
         <div class="item-content">
           <div class="item-user">{{item.user_name}} {{item.workName}} <span v-text="item.sort_id"></span> 号</div>
-          <div style="font-size:14px;">票数 <span v-text="item.vote_num"></span></div>
-          <div>距离上一名还差 <span v-text="item.last_num"></span> 票</div>
+          <div style="font-size:14px;">赞数 <span v-text="item.vote_num"></span></div>
+          <div>距离上一名还差 <span v-text="item.last_num"></span> 赞</div>
           <div v-html="item.user_intro"></div>
         </div>
         <div class="item-right">

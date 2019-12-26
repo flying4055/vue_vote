@@ -85,6 +85,13 @@ const router = new Router({
       meta: { title: "投诉" }
     },
     {
+      path: "/buy/:id",
+      hidden: true,
+      name: "buy",
+      component: () => import("@/view/Buy"),
+      meta: { title: "抢购" }
+    },
+    {
       path: "*",
       name: "404",
       component: () => import("@/view/Page404"),
@@ -93,24 +100,24 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  var params = to.fullPath.split('/');
-  var token = localStorage.getItem('token');
-  if (params[1] == "login" && params[2] == 'token') {
-    localStorage.setItem('token', params[3]);
-    var url = localStorage.getItem("beforeUrl");
-    var urlParam = url.split('/');
-    if (url == '' || urlParam[1] == "login") {
-      url = '/';
-    }
-    next(url);
-    return false;
-  } else if (!token && params[1] != "login") {
-    localStorage.setItem("beforeUrl", to.fullPath);
-    next("/login");
-    return false;
-  }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   var params = to.fullPath.split('/');
+//   var token = localStorage.getItem('token');
+//   if (params[1] == "login" && params[2] == 'token') {
+//     localStorage.setItem('token', params[3]);
+//     var url = localStorage.getItem("beforeUrl");
+//     var urlParam = url.split('/');
+//     if (url == '' || urlParam[1] == "login") {
+//       url = '/';
+//     }
+//     next(url);
+//     return false;
+//   } else if (!token && params[1] != "login") {
+//     localStorage.setItem("beforeUrl", to.fullPath);
+//     next("/login");
+//     return false;
+//   }
+//   next();
+// });
 
 export default router;

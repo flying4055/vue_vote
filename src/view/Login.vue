@@ -24,10 +24,13 @@
 			let ua = window.navigator.userAgent.toLowerCase();
 			console.log(ua.match(/MicroMessenger/i));
 			if (ua.match(/MicroMessenger/i) == "micromessenger") {
-				console.log("跳转到微信授权页面");
+        console.log("跳转到微信授权页面");
+        let host = window.location.hostname;
+        // let host = `test.sxsgxf.cn`;
+        let appid = `wx54b9eb7dcfbf53d2`;
 				// 跳转到微信授权页面
 				window.location.href =
-					"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa6cbea2e7840e13d&redirect_uri=http%3a%2f%2ftest.ssjunjun.com%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
+					"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appid+"&redirect_uri=http%3a%2f%2f"+host+"%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
 			} else{
         this.cli = true;
       }
