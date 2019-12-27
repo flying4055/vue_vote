@@ -1,7 +1,7 @@
 <template>
   <div style="font-size:14px;">
     <van-notice-bar :text="$store.state.notice_text" left-icon="volume-o" />
-    <div @click="onClickBuy">
+    <div @click="onClickBuy" v-show="false">
       <img style="width:100%;" src="../../static/buy_1.jpg" alt />
     </div>
     <van-row>
