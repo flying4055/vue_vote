@@ -13,7 +13,8 @@ Vue.use(VueAxios, axios);
 import CanvasPoster from 'vue-canvas-poster';
 Vue.use(CanvasPoster)
 
-axios.defaults.baseURL = window.location.hostname;
+// axios.defaults.baseURL = window.location.hostname;
+axios.defaults.baseURL = "/";
 // axios.defaults.baseURL = "http://test.sxsgxf.cn/";
 // axios.defaults.baseURL = "http://yang.vote.test/";
 axios.interceptors.request.use((config) => {

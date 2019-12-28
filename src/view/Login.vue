@@ -25,15 +25,19 @@ export default {
     console.log(ua.match(/MicroMessenger/i));
     if (ua.match(/MicroMessenger/i) == "micromessenger") {
       console.log("跳转到微信授权页面");
-      let host = window.location.hostname;
+      // let host = window.location.hostname;
       // let host_arr = {
       //   "test.sxsgxf.cn": `wx54b9eb7dcfbf53d2`,
       //   "www.shanxiguyin.cn": `wxe27d25bc3f84aab9`,
       //   "www.ysxfbz.cn": `wx6a0eb033efd229c0`
       // };
-      let appid = `wxe27d25bc3f84aab9`;
+      // let appid = "wxe27d25bc3f84aab9";
       // 跳转到微信授权页面
-      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=http%3a%2f%2f${host}%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE`;
+      // http.getWxUrl(function (params) {
+
+      // })
+      window.location.href =
+        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54b9eb7dcfbf53d2&redirect_uri=http%3a%2f%2ftest.sxsgxf.cn%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
     } else {
       this.cli = true;
     }
