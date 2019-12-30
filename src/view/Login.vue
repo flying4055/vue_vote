@@ -37,7 +37,7 @@ export default {
 
       // })
       window.location.href =
-        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx54b9eb7dcfbf53d2&redirect_uri=http%3a%2f%2ftest.sxsgxf.cn%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
+        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6a0eb033efd229c0&redirect_uri=http%3a%2f%2fwww.ysxfbz.cn%2fapi%2fweixin%2fcallback&response_type=code&scope=snsapi_userinfo&state=STATE";
     } else {
       this.cli = true;
     }
